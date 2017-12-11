@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://xmlns.jcp.org/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:head>
+	
+		<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
+
+	<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+		<style type="text/css">
+		    #wrapper {
+			  text-align: center;
+			}
+
+		</style>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width,intial-scale=1"/>
+		<meta http-equiv="X-UA-Conpatible" content="IE=edge"/>
+		<title> Registration Form</title>
+	
+	</h:head>
+	
+	<h:body>
+	<c:choose>
+	<c:when test="#{sessionScope.userid != null}">
+	<h3> You Are Already Logged in</h3>
+	</c:when>
+	<c:otherwise>
+	
+	<div id="wrapper">
+	<h:form id="register_form" styleClass="form-horizontal">
+		
+			<div class="container" style="margin-top: 10px">
+					<div class="navbar navbar-inverse">
+						<div class="navbar-brand">
+							Registration
+						</div>
+						<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+						<h:commandButton value="Sign In" action="#{register.signinUser()}" immediate="true" class="btn btn-primary navbar-inverse"> </h:commandButton>
+						</div>	
+					</div>		
+			</div>
+			
+		
+
+			<div class="form-group" >
+		
+				<h:outputLabel value="Name :" styleClass="control-label col-sm-5"></h:outputLabel>
+				<div class="col-sm-3">
+				<h:inputText id="name" value="#{register.name}" styleClass="form-control" title="First Name" tabindex="1" required="true" 
+					requiredMessage="Please enter your Name."
+					validatorMessage="Name should not contain ant special character">
+				<f:validateRegex pattern="^[\p{L}\s'.-]+$" />
+				</h:inputText>
+				<h:message id="nameMessage" for="name" style="color:red"/>
+				</div>
+			</div>
+			
+			
+			<div class="form-group" >
+		
+				<h:outputLabel value="Personal Email : " styleClass="control-label col-sm-5"></h:outputLabel>
+				<div class="col-sm-3">
+				<h:inputText id="email" value="#{register.email}" styleClass="form-control" title="Email" tabindex="1" required="true"
+				requiredMessage="Please enter your email address."
+				validatorMessage="Invalid email format">
+				<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+				</h:inputText>
+				<h:message id="emaileMessage" for="email" style="color:red"/>
+			</div>
+			
+			</div>
+			
+			<div class="form-group" >
+		
+				<h:outputLabel value="UserID :" styleClass="control-label col-sm-5"></h:outputLabel>
+				<div class="col-sm-3">
+				<h:inputText id="userid" value="#{register.userid}" styleClass="form-control" title="Userid" tabindex="1" required="true" 
+				requiredMessage="Please enter your UserID.">
+				<f:attribute name="useridvalidator" value="UserID Already Exists" />
+				</h:inputText>
+				<h:message id="useridMessage" for="userid" style="color:red" showDetail="true"/>
+				</div>
+			
+			</div>
+			
+			<div class="form-group" >
+		
+				<h:outputLabel value="Password :" styleClass="control-label col-sm-5"></h:outputLabel>
+				<div class="col-sm-3">
+				<h:inputSecret id="password" value="#{register.password}" styleClass="form-control" title="Password" tabindex="2" required="true" 
+				requiredMessage="Please enter your Password."/>
+				<h:message id="passwordMessage" for="password" style="color:red"/>
+				</div>
+			
+			</div>
+			
+			<div class="form-group" >
+				<h:selectOneRadio value="#{register.usertype}" styleClass="control-label col-sm-3">
+    			<div class="col-sm-4">
+    			<f:selectItem itemValue="client" itemLabel=" Client"  />
+    			<f:selectItem itemValue="manager" itemLabel=" Manager" />
+    			<f:ajax render="license" />
+    			<f:ajax render="commission" />
+    			</div>
+				</h:selectOneRadio>
+			</div>
+			
+			
+			<div class="form-group">
+				<h:outputLabel value="License Number :"  styleClass="control-label col-sm-5"></h:outputLabel>
+				<div class="col-sm-3">
+				<h:inputSecret id="license"  disabled="#{register.usertype == 'client'}" value="#{register.license}" styleClass="form-control" title="License" tabindex="2" required="true" 
+				requiredMessage="Please enter your License Number."/>
+				<h:message id="licenseMessage" for="license" style="color:red"/>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<h:outputLabel value="Commission :"  styleClass="control-label col-sm-5"></h:outputLabel>
+				<div class="col-sm-3">
+				<h:inputSecret id="commission" disabled="#{register.usertype == 'client'}" value="#{register.commission}" styleClass="form-control" title="Commission" tabindex="2" required="true" 
+				requiredMessage="Please enter your Commission."/>
+				<h:message id="commissionMessage" for="commission" style="color:red"/>
+				</div>
+			</div>
+		
+			<div class="form-group" align="center" >
+
+				<h:commandButton value="Register" type="submit" action="#{register.registerUser()}" styleClass="btn btn-primary navbar-inverse">
+				</h:commandButton>
+				
+			</div>
+			
+		</h:form>
+		
+		</div>
+		</c:otherwise>
+		</c:choose>
+	</h:body>	
+</html>

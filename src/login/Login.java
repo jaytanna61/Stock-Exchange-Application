@@ -1,0 +1,129 @@
+package login;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+
+@ManagedBean
+@ApplicationScoped
+public class Login {
+	
+	private String userid,password,name;
+	
+	public Login(){	
+	}
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String submit(){
+		
+		Connection con = null;
+		try {
+			// Setup the DataSource object
+			com.mysql.jdbc.jdbc2.optional.MysqlDataSource ds = new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
+			ds.setServerName("localhost");
+			ds.setPortNumber(3306);
+			ds.setDatabaseName("user");
+			ds.setUser("root");
+			ds.setPassword("admin");
+
+			// Get a connection object
+			con = ds.getConnection();
+
+			// Get a prepared SQL statement
+			String sql = "SELECT name from user_table where userid = ? and password = ?";
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1,this.userid);
+			st.setString(2, this.password);
+
+			// Execute the statement
+			ResultSet rs = st.executeQuery();
+
+			// Iterate through results
+			if (rs.next()) {
+				ExternalContext externalContext = FacesContext.getCurrentInstance()
+				        .getExternalContext();
+				this.setName(rs.getString("name"));
+				/*HttpSession session = SessionUtils.getSession();
+				session.setAttribute("username", this.userid);*/
+				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userid",this.userid);
+				try {
+					    externalContext.redirect(externalContext.getRequestContextPath()
+					            + "/faces/response.xhtml");
+					    return "true";
+			
+				} catch (IOException e) {
+				    // TODO Auto-generated catch block
+				    e.printStackTrace();
+				    return "false";
+				}
+				
+			}
+			else
+			{
+				//JOptionPane.showMessageDialog(null, "Username or Password is incorrect");
+				/*FacesMessage fmsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Authentication failed", "UserID or Password is incorrect.");
+				 throw new ValidatorException(fmsg);*/
+				FacesContext.getCurrentInstance().addMessage(
+						"login_form:password",
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Incorrect Username and Passowrd",
+								"Username or password is incorrect"));
+			}
+		}catch (Exception e) {
+			System.err.println("Exception: " + e.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+			}
+		}
+		return "false";
+
+	}
+
+	public String logout() {
+		/*HttpSession session = SessionUtils.getSession();
+		session.invalidate();*/
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+		        .getExternalContext();
+		try {
+		externalContext.redirect(externalContext.getRequestContextPath()
+	            + "/faces/login.xhtml");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return "true";
+	}
+}
