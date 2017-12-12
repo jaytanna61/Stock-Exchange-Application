@@ -132,7 +132,7 @@ public class DAO {
 	public boolean buyStocks(String userid,String managerid,String commission,String Symbol,String count,String price,Double cost)
 	{
 		con=DatabaseConnection.getConnection();
-		String update_balance_sql = "UPDATE SYMBOLS SET account_balance = ? WHERE USERID = ?";;
+		String update_balance_sql = "UPDATE user_table SET account_balance = ? WHERE USERID = ?";;
 		
 		try {
 			PreparedStatement update_balance_st = con.prepareStatement(update_balance_sql);
@@ -172,13 +172,14 @@ public class DAO {
 			
 			
 			
-			String insert_history = "INSERT into account_history (userid,symbol,price,count) VALUES (?,?,?,?)";
+			String insert_history = "INSERT into account_history (userid,symbol,price,count,buy_or_sell) VALUES (?,?,?,?,?)";
 			PreparedStatement insert_history_st = con.prepareStatement(insert_history);
 			//st.setInt(1, 1);
 			insert_history_st.setString(1,userid);
 			insert_history_st.setString(2, Symbol);
 			insert_history_st.setString(3,price);
 			insert_history_st.setString(4,count);
+			insert_history_st.setString(5,"Buy");
 			insert_history_st.executeUpdate();
 			
 			

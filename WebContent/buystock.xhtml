@@ -72,7 +72,7 @@
 		
 			<h:outputLabel value="Number of Stock to buy :" styleClass="control-label col-sm-5"></h:outputLabel>
 			<div class="col-sm-3">
-				<h:inputText id="count" styleClass="form-control" title="count" tabindex="2" required="true" 
+				<h:inputText id="count" value="#{buystock.numberOfStocks}" styleClass="form-control" title="count" tabindex="2" required="true" 
 				requiredMessage="Please enter total number of stock you want to buy."></h:inputText>
 				<h:message id="countMessage" for="count" style="color:red"/>
 				</div>
