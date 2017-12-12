@@ -65,10 +65,12 @@
 		    			<td class="order-table-odd-row">#{o.price}</td>
 		    			<td class="order-table-odd-row">#{o.volume}</td>
 		    			<td class="order-table-odd-row">
-		    			<h:commandButton  type="submit" value="Add To Watchlist" action="#{o.addToWatchlist}" styleClass="btn btn-primary navbar-inverse">
-		    				
+		    			<h:commandButton  type="submit" value="Buy" action="#{o.buy}" styleClass="btn btn-primary navbar-inverse">
 		    			</h:commandButton>
-		    			
+		    			</td>
+		    			<td class="order-table-odd-row">
+		    			<h:commandButton  type="submit" value="Sell" action="#{o.sell}" styleClass="btn btn-primary navbar-inverse">
+		    			</h:commandButton>
 		    			</td>
 		    		  </tr>
 	    			</h:panelGroup>

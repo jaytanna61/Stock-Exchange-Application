@@ -57,7 +57,6 @@ public class Watchlist {
 			
 			while(iterator.hasNext())
 			{
-			System.out.println(symbols_rs.getString("symbol"));
 			// Get a prepared SQL statement
 			
 			Connection con2=DatabaseConnection.getConnection();
@@ -66,8 +65,9 @@ public class Watchlist {
 			st.setString(1,iterator.next());
 			// Execute the statement
 			ResultSet rs = st.executeQuery();
+			rs.beforeFirst();
+			rs.next();
 			
-			System.out.println(rs.getString("symbol"));
 			
 			stockList.add((new Stock(rs.getString("cname"),rs.getString("symbol"), 
 					new BigDecimal(rs.getString("price")),Integer.parseInt(rs.getString("volume")))));
@@ -97,16 +97,14 @@ public class Watchlist {
 			int volume;
 			
 			
-			public String addToWatchlist() {
-				//String bid=event.getComponent().getId();
-				//System.out.println(symbol);
+			public String buy() {
+				System.out.println("BUY");
 				
-				ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-				Map<String, Object> sessionMap = externalContext.getSessionMap();
-				String userid=sessionMap.get("userid").toString();
-				DAO dao=DAO.getInstance();
-				
-				dao.addToWatchlist(userid, this.symbol);
+				return null;
+			}
+			
+			public String sell() {
+				System.out.println("SELL");
 				
 				return null;
 			}
