@@ -87,16 +87,8 @@ public class Register {
 		{
 		Connection con = null;
 		try {
-			// Setup the DataSource object
-			com.mysql.jdbc.jdbc2.optional.MysqlDataSource ds = new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
-			ds.setServerName("localhost");
-			ds.setPortNumber(3306);
-			ds.setDatabaseName("user");
-			ds.setUser("root");
-			ds.setPassword("admin");
-
 			// Get a connection object
-			con = ds.getConnection();
+			con=DatabaseConnection.getConnection();
 
 			// Get a prepared SQL statement
 			String sql = "INSERT into user_table (name,email,userid,password) VALUES (?,?,?,?)";

@@ -16,7 +16,7 @@ import javax.faces.context.FacesContext;
 @ApplicationScoped
 public class Login {
 	
-	private String userid,password,name;
+	private String userid="jaytanna61",password="33637371",name;
 	
 	public Login(){	
 	}
@@ -72,7 +72,7 @@ public class Login {
 			// Iterate through results
 			if (rs.next()) {
 				
-				AlphaVantage.getData();
+				//AlphaVantage.getData();
 				
 				ExternalContext externalContext = FacesContext.getCurrentInstance()
 				        .getExternalContext();
@@ -124,6 +124,18 @@ public class Login {
 		try {
 		externalContext.redirect(externalContext.getRequestContextPath()
 	            + "/faces/login.xhtml");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return "true";
+	}
+	
+	public String watchlist() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+		        .getExternalContext();
+		try {
+		externalContext.redirect(externalContext.getRequestContextPath()
+	            + "/faces/watchlist.xhtml");
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
