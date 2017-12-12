@@ -58,4 +58,25 @@ public class DAO {
 		
 		return false;
 	}
+	
+	public String getPrice(String Symbol) {
+		
+		con=DatabaseConnection.getConnection();
+		String sql = "SELECT price FROM symbols WHERE symbol = ?";
+		PreparedStatement st;
+		try {
+			st = con.prepareStatement(sql);
+			st.setString(1,Symbol);
+			ResultSet rs =st.executeQuery();
+			rs.beforeFirst();
+			rs.next();
+			String price=rs.getString("price");
+			return price;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
 }

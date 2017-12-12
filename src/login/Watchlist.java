@@ -5,6 +5,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -86,9 +87,12 @@ public class Watchlist {
 			stockList.remove(stock);
 			return null;
 		}
-	
 		
-	 
+		
+
+
+
+
 		public static class Stock{
 			
 			String companyName;
@@ -96,17 +100,33 @@ public class Watchlist {
 			BigDecimal price;
 			int volume;
 			
+
 			
 			public String buy() {
-				System.out.println("BUY");
+				ExternalContext externalContext = FacesContext.getCurrentInstance()
+				        .getExternalContext();
+				try {
+				externalContext.redirect(externalContext.getRequestContextPath()
+			            + "/faces/buystock.xhtml");
+				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("symbol",this.symbol);
+				}catch(IOException e) {
+					e.printStackTrace();
+				}
+				return "true";
 				
-				return null;
 			}
 			
 			public String sell() {
-				System.out.println("SELL");
-				
-				return null;
+				ExternalContext externalContext = FacesContext.getCurrentInstance()
+				        .getExternalContext();
+				try {
+				externalContext.redirect(externalContext.getRequestContextPath()
+			            + "/faces/sellstock.xhtml");
+				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("symbol",this.symbol);
+				}catch(IOException e) {
+					e.printStackTrace();
+				}
+				return "true";
 			}
 			
 			public Stock(String companyName, String symbol, 
