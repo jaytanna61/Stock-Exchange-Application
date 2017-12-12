@@ -55,7 +55,7 @@ public class BuyStock {
 		
 		if(cost <= balance)
 		{
-			dao.buyStocks(userid,null,getSymbol(),getNumberOfStocks(),getPrice(),cost);
+			dao.buyStocks(userid,null,null,getSymbol(),getNumberOfStocks(),getPrice(),cost);
 		}
 		
 		return null;
