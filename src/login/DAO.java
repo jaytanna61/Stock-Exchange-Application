@@ -79,4 +79,59 @@ public class DAO {
 		return null;
 		
 	}
+	
+	public String getCount(String userid, String Symbol) {
+		
+		con=DatabaseConnection.getConnection();
+		String sql = "SELECT count FROM stock_count WHERE symbol = ? AND userid = ? " ;
+		PreparedStatement st;
+		try {
+			st = con.prepareStatement(sql);
+			st.setString(1,Symbol);
+			st.setString(2, userid);
+			ResultSet rs =st.executeQuery();
+			rs.beforeFirst();
+			if(rs.next())
+			{
+				String count=rs.getInt("count")+"";
+				return count;
+			}
+			return 0+"";
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	public Double getBalance(String userid)
+	{
+		con=DatabaseConnection.getConnection();
+		String sql = "SELECT account_balance FROM user_table WHERE userid = ? " ;
+		PreparedStatement st;
+		try {
+			st = con.prepareStatement(sql);
+			st.setString(1, userid);
+			ResultSet rs =st.executeQuery();
+			rs.beforeFirst();
+			if(rs.next())
+			{
+				Double count=rs.getDouble("account_balance");
+				return count;
+			}
+			return 0.00;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return 0.00;
+	}
+	
+	public boolean buyStocks(String userid,String managerid,String Symbol,String count,String price,Double cost)
+	{
+		
+		return false;
+	}
 }

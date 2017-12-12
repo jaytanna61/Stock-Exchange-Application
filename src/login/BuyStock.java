@@ -11,10 +11,22 @@ import javax.faces.context.FacesContext;
 @ApplicationScoped
 public class BuyStock {
 	
-	String symbol,price;
+	String symbol,price,numberOfStocks;
 	
 	
 	
+	public String getNumberOfStocks() {
+		return numberOfStocks;
+	}
+
+
+
+	public void setNumberOfStocks(String numberOfStocks) {
+		this.numberOfStocks = numberOfStocks;
+	}
+
+
+
 	public String getSymbol() {
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		Map<String, Object> sessionMap = externalContext.getSessionMap();
@@ -34,6 +46,18 @@ public class BuyStock {
 
 	public String buyStock()
 	{
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		Map<String, Object> sessionMap = externalContext.getSessionMap();
+		String userid=sessionMap.get("userid").toString();
+		Double cost= Integer.parseInt(getNumberOfStocks()) * Double.parseDouble(getPrice());
+		DAO dao=DAO.getInstance();
+		Double balance=dao.getBalance(userid);
+		
+		if(cost <= balance)
+		{
+			dao.buyStocks(userid,null,getSymbol(),getNumberOfStocks(),getPrice(),cost);
+		}
+		
 		return null;
 	}
 

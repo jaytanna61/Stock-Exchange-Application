@@ -53,6 +53,7 @@
 		
 				<h:outputLabel value="Stock :" styleClass="control-label col-sm-5"></h:outputLabel>
 				<div class="col-sm-3">
+				<h:outputLabel value="#{sellstock.symbol}" styleClass="control-label col-sm-5"></h:outputLabel>
 				</div>
 			
 			</div>
@@ -61,6 +62,7 @@
 		
 				<h:outputLabel value="Current Price :" styleClass="control-label col-sm-5"></h:outputLabel>
 				<div class="col-sm-3">
+				<h:outputLabel value="#{sellstock.price}" styleClass="control-label col-sm-5"></h:outputLabel>
 				</div>
 			
 			</div>
@@ -69,6 +71,7 @@
 		
 				<h:outputLabel value="Number of Stock Owned :" styleClass="control-label col-sm-5"></h:outputLabel>
 				<div class="col-sm-3">
+				<h:outputLabel value="#{sellstock.count}" styleClass="control-label col-sm-5"></h:outputLabel>
 				</div>
 			
 			</div>
@@ -87,7 +90,7 @@
 		
 		<div class="form-group" style="center" >
 			
-			<h:commandButton type="submit" value="Sell Stock" action="#{login.submit()}" styleClass="btn btn-primary navbar-inverse">
+			<h:commandButton type="submit" value="Sell Stock" action="#{sellstock.sellStock}" styleClass="btn btn-primary navbar-inverse">
 			</h:commandButton>
 			
 			<h:commandButton type="submit" value="Request Manager To Sell" action="#{login.submit()}" styleClass="btn btn-primary navbar-inverse">
