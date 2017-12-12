@@ -49,10 +49,10 @@
 	
 	<table class="order-table">
     		<tr>
-    			<th class="order-table-header">Order No</th>
-    			<th class="order-table-header">Product Name</th>
+    			<th class="order-table-header">Company Name</th>
+    			<th class="order-table-header">Symbol</th>
     			<th class="order-table-header">Price</th>
-    			<th class="order-table-header">Quantity</th>
+    			<th class="order-table-header">Volume</th>
     		</tr>
     		<tbody>
 	    		<ui:repeat var="o" value="#{stock_main.orderList}" varStatus="status">
@@ -62,6 +62,11 @@
 		    			<td class="order-table-odd-row">#{o.productName}</td>
 		    			<td class="order-table-odd-row">#{o.price}</td>
 		    			<td class="order-table-odd-row">#{o.qty}</td>
+		    			<td class="order-table-odd-row">
+		    			<h:commandButton value="Add to Watchlist" action="#{stock_main.addToWatchlist}" styleClass="btn btn-primary navbar-inverse">
+		    	
+		    			</h:commandButton>
+		    			</td>
 		    		  </tr>
 	    			</h:panelGroup>
 	    		</ui:repeat>

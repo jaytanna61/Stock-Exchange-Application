@@ -1,14 +1,9 @@
 package login;
 
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.ws.rs.client.Client;
@@ -19,21 +14,21 @@ import javax.ws.rs.core.MediaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@ManagedBean(name="stock_main")
-@ApplicationScoped
-public class stockMain {
-
+public class AlphaVantage {
+	
 	static final String Key="L0BF024O7DI22RX3";
 	
-	private ArrayList<Order> orderList = new ArrayList<Order>();
-	private Order order;
 	
-	//private static ArrayList<String> orderList=null;
 	
-		 
-		public ArrayList<Order> getOrderList() {
-/*			orderList = new ArrayList<Order>();
-			try {
+	private AlphaVantage() {
+		
+	}
+	
+	public static void getData() {
+		String price=null;
+		int volume=0;
+		
+		try {
 			Connection con=DatabaseConnection.getConnection();
 			// Get a prepared SQL statement
 			String sql = "SELECT * from symbols ";
@@ -44,8 +39,7 @@ public class stockMain {
 			int i=1;
 			while(rs.next())
 			{
-				String price=null;
-				int volume=0;
+			
 				
 				Client client= ClientBuilder.newClient();
 
@@ -82,7 +76,15 @@ public class stockMain {
 					price=Second.get("1. open").asText();
 					volume=Second.get("5. volume").asInt();
 					
-					while(dates.hasNext()) {
+					String inner_sql = "UPDATE SYMBOLS SET PRICE = ? , VOLUME = ? WHERE SYMBOL = ?";;
+					PreparedStatement inner_st = con.prepareStatement(inner_sql);
+					inner_st.setString(1,price);
+					inner_st.setString(2,volume+"");
+					inner_st.setString(3,rs.getString("symbol"));
+					// Execute the statement
+					inner_st.executeUpdate();
+					
+					/*while(dates.hasNext()) {
 						// Read the first date's open price
 						JsonNode first=root.get("Weekly Time Series");
 						JsonNode Second=first.get(dates.next());
@@ -92,82 +94,17 @@ public class stockMain {
 						System.out.println(Double.parseDouble(price));
 						// remove break if you wan't to print all the open prices.
 						break;
-					}
+					}*/
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-				
-				orderList.add((new Order(rs.getString("cname"),rs.getString("symbol"), 
-						new BigDecimal(price),volume)));
-				//orderList.add(rs.getString(i));
-				i++;
+				} 	
 			}
 			
-			}catch(Exception e)
-			{
-				e.printStackTrace();
-			}*/
-			
-			return orderList;
-			
+		}catch(Exception e) {
+			e.printStackTrace();
+			}
 		}
 		
-		public String deleteAction(Order order) {
-			orderList.remove(order);
-			return null;
-		}
-		
-		public void addToWatchlist() {
-			//String bid=event.getComponent().getId();
-			System.out.println(order);
-		}
-	 
-		public static class Order{
-			
-			String orderNo;
-			String productName;
-			BigDecimal price;
-			int qty;
+	}
 
-			public Order(String orderNo, String productName, 
-					BigDecimal price, int qty) {
-				this.orderNo = orderNo;
-				this.productName = productName;
-				this.price = price;
-				this.qty = qty;
-			}
-
-			public String getOrderNo() {
-				return orderNo;
-			}
-
-			public void setOrderNo(String orderNo) {
-				this.orderNo = orderNo;
-			}
-
-			public String getProductName() {
-				return productName;
-			}
-
-			public void setProductName(String productName) {
-				this.productName = productName;
-			}
-
-			public BigDecimal getPrice() {
-				return price;
-			}
-
-			public void setPrice(BigDecimal price) {
-				this.price = price;
-			}
-
-			public int getQty() {
-				return qty;
-			}
-
-			public void setQty(int qty) {
-				this.qty = qty;
-			}
-		}
-}

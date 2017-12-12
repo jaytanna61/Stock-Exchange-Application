@@ -71,6 +71,9 @@ public class Login {
 
 			// Iterate through results
 			if (rs.next()) {
+				
+				AlphaVantage.getData();
+				
 				ExternalContext externalContext = FacesContext.getCurrentInstance()
 				        .getExternalContext();
 				this.setName(rs.getString("name"));
