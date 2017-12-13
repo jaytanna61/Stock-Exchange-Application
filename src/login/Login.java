@@ -205,4 +205,53 @@ public class Login {
 		}
 		return "true";
 	}
+	
+	public String home_manager() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+		        .getExternalContext();
+		try {
+		externalContext.redirect(externalContext.getRequestContextPath()
+	            + "/faces/response_manager.xhtml");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return "true";
+	}
+	
+	public String client_request() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+		        .getExternalContext();
+		try {
+		externalContext.redirect(externalContext.getRequestContextPath()
+	            + "/faces/client_requests.xhtml");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return "true";
+	}
+	
+	public String watchlist_manager() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+		        .getExternalContext();
+		try {
+		externalContext.redirect(externalContext.getRequestContextPath()
+	            + "/faces/watchlist_manager.xhtml");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return "true";
+	}
+	
+	public String account_manager() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+		        .getExternalContext();
+		try {
+		externalContext.redirect(externalContext.getRequestContextPath()
+	            + "/faces/account.xhtml");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return "true";
+	}
+	
 }
