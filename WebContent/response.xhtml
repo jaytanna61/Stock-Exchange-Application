@@ -50,24 +50,28 @@
 					<h:commandButton type="submit" value="Account" action="#{login.account}" styleClass="btn btn-primary navbar-inverse">
 					</h:commandButton>
 				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Home" action="#{login.home}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
 			</div>				
 		</div>
-		
+		<div align="center">
 		<table>
     		<tr>
-    			<th>Company Name</th>
-    			<th>Symbol</th>
-    			<th>Price</th>
-    			<th>Volume</th>
+    			<th style="padding:0 30px 0 30px;">Company Name</th>
+    			<th style="padding:0 30px 0 30px;">Symbol</th>
+    			<th style="padding:0 30px 0 30px;">Price</th>
+    			<th style="padding:0 30px 0 30px;">Volume</th>
     		</tr>
     		<tbody>
 	    		<ui:repeat var="o" value="#{stock_main.stockList}" varStatus="status">
 	    		        <h:panelGroup>
 	    			  <tr>
-		    			<td>#{o.companyName}</td>
-		    			<td>#{o.symbol}</td>
-		    			<td>#{o.price}</td>
-		    			<td>#{o.volume}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.companyName}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.symbol}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.price}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.volume}</td>
 		    			<td>
 		    			<h:commandButton  type="submit" value="Add To Watchlist" action="#{o.addToWatchlist}" styleClass="btn btn-primary navbar-inverse">
 		    				
@@ -78,7 +82,8 @@
 	    			</h:panelGroup>
 	    		</ui:repeat>
     		</tbody>
-    </table>
+    	</table>
+    	</div>>
 	</h:form>
 	</c:otherwise>
 	</c:choose>

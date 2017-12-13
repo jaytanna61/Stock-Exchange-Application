@@ -43,7 +43,19 @@
 					Buy Stock
 				</div>
 				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
-					<h:commandButton type="submit" value="Watch-list" immediate="true" action="#{login.watchlist}" styleClass="btn btn-primary navbar-inverse">
+					<h:commandButton type="submit" value="Log out" action="#{login.logout}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Watch-list" action="#{login.watchlist}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Account" action="#{login.account}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Home" action="#{login.home}" styleClass="btn btn-primary navbar-inverse">
 					</h:commandButton>
 				</div>
 			</div>				

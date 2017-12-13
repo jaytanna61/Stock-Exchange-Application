@@ -45,63 +45,77 @@
 					<h:commandButton type="submit" value="Watch-list" action="#{login.watchlist}" styleClass="btn btn-primary navbar-inverse">
 					</h:commandButton>
 				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Account" action="#{login.account}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Home" action="#{login.home}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
 			</div>				
 		</div>
 		
+		<div align="center" >
 		<br/>
-		<h4><b>Account Balance : </b></h4> 
-		<h:outputLabel value="#{account.balance}" styleClass="control-label col-sm-5"></h:outputLabel>
+		<h4><b><h:outputLabel value="Account Balance :"></h:outputLabel></b></h4>
+		<h:outputLabel value="#{account.balance}"></h:outputLabel>
+		
+		</div>
 		
 		<br/><br/>
 		
+		<div align="center" >
 		<h4><b>Stocks Owned</b></h4>
 		<table>
     		<tr>
-    			<th>Symbol</th>
-    			<th>Stock Count</th>
+    			<th style="padding:0 30px 0 30px;">Symbol</th>
+    			<th style="padding:0 30px 0 30px;">Stock Count</th>
     		</tr>
     		<tbody>
 	    		<ui:repeat var="o" value="#{account.countList}" varStatus="status">
 	    		        <h:panelGroup>
 	    			  <tr>
-		    			<td>#{o.symbol}</td>
-		    			<td>#{o.count}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.symbol}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.count}</td>
 		    		  </tr>
 	    			</h:panelGroup>
 	    		</ui:repeat>
     		</tbody>
 	    </table>
-	    
+	    </div>>
 	    
 	    <br/>
 	    <br/>
 	    
+	    
+	    <div align="center" >
 	    <h4><b>Account History</b></h4>
 	    <table>
     		<tr>
-    			<th>Symbol</th>
-    			<th>Price</th>
-    			<th>Count</th>
-    			<th>Cost</th>
-    			<th>Manager Commission </th>
-    			<th>Buy/Sell</th>
+    			<th style="padding:0 30px 0 30px;">Symbol</th>
+    			<th style="padding:0 30px 0 30px;">Price</th>
+    			<th style="padding:0 30px 0 30px;">Count</th>
+    			<th style="padding:0 30px 0 30px;">Cost</th>
+    			<th style="padding:0 30px 0 30px;">Manager Commission </th>
+    			<th style="padding:0 30px 0 30px;">Buy/Sell</th>
     		</tr>
     		<tbody>
 	    		<ui:repeat var="o" value="#{account.transactionList}" varStatus="status">
 	    		        <h:panelGroup>
 	    			  <tr>
-		    			<td>#{o.symbol}</td>
-		    			<td>#{o.price}</td>
-		    			<td>#{o.count}</td>
-		    			<td>#{o.cost}</td>
-		    			<td>#{o.commission}</td>
-		    			<td>#{o.buy_or_sell}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.symbol}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.price}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.count}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.cost}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.commission}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.buy_or_sell}</td>
 		    		  </tr>
 	    			</h:panelGroup>
 	    		</ui:repeat>
     		</tbody>
 	    </table>
-	    
+	    </div>
 	</h:form>
 	</c:otherwise>
 	</c:choose>
