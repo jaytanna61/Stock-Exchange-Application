@@ -57,6 +57,10 @@ public class BuyStock {
 		{
 			dao.buyStocks(userid,null,null,getSymbol(),getNumberOfStocks(),getPrice(),cost);
 		}
+		else
+		{
+			
+		}
 		
 		return null;
 	}

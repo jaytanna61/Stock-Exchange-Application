@@ -155,7 +155,7 @@ public class DAO {
 				//st.setInt(1, 1);
 				uodate_count_st.setString(1,userid);
 				uodate_count_st.setString(2, Symbol);
-				uodate_count_st.setString(3,count+rs.getInt("count"));
+				uodate_count_st.setString(3,Integer.parseInt(count)+rs.getInt("count")+"");
 				uodate_count_st.executeUpdate();
 			}
 			else 
@@ -182,7 +182,68 @@ public class DAO {
 			insert_history_st.setString(5,"Buy");
 			insert_history_st.executeUpdate();
 			
+			return true;
 			
+								
+			
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return false;
+	}
+	
+	public boolean sellStocks(String userid,String managerid,String commission,String Symbol,String count,String price,Double cost)
+	{
+		con=DatabaseConnection.getConnection();
+		String update_balance_sql = "UPDATE user_table SET account_balance = ? WHERE USERID = ?";;
+		
+		try {
+			PreparedStatement update_balance_st = con.prepareStatement(update_balance_sql);
+			update_balance_st.setDouble(1,getBalance(userid)+cost);
+			update_balance_st.setString(2,userid);
+			// Execute the statement
+			update_balance_st.executeUpdate();
+			
+			String check_count_sql = "SELECT count FROM stock_count WHERE userid = ? and symbol = ? " ;
+			PreparedStatement check_count_st = con.prepareStatement(check_count_sql);
+			check_count_st.setString(1,userid);
+			check_count_st.setString(2, Symbol);
+			ResultSet rs =check_count_st.executeQuery();
+			rs.beforeFirst();
+			if(rs.next())
+			{
+				// Get a prepared SQL statement
+				String update_count = "UPDATE stock_count SET count = ? WHERE userid = ? AND symbol = ?";
+				PreparedStatement uodate_count_st = con.prepareStatement(update_count);
+				//st.setInt(1, 1);
+				uodate_count_st.setString(1,(rs.getInt("count")-Integer.parseInt(count))+"");
+				uodate_count_st.setString(2,userid);
+				uodate_count_st.setString(3, Symbol);
+				uodate_count_st.executeUpdate();
+			}
+			else 
+			{
+				return false;
+			}
+			
+			
+			
+			String insert_history = "INSERT into account_history (userid,symbol,price,count,buy_or_sell) VALUES (?,?,?,?,?)";
+			PreparedStatement insert_history_st = con.prepareStatement(insert_history);
+			//st.setInt(1, 1);
+			insert_history_st.setString(1,userid);
+			insert_history_st.setString(2, Symbol);
+			insert_history_st.setString(3,price);
+			insert_history_st.setString(4,count);
+			insert_history_st.setString(5,"Sell");
+			insert_history_st.executeUpdate();
+			
+			return true;
 			
 								
 			
