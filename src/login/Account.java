@@ -17,9 +17,27 @@ import java.util.Map;
 @ApplicationScoped
 public class Account {
 	
+	String balance;
+	
+	public String getBalance() {
+		
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		Map<String, Object> sessionMap = externalContext.getSessionMap();
+		String userid=sessionMap.get("userid").toString();
+		
+		DAO dao=DAO.getInstance();
+		balance=dao.getBalance(userid)+"";
+		
+		return balance;
+	}
+
+	public void setBalance(String balance) {
+		this.balance = balance;
+	}
+
 	private ArrayList<Count> countList = new ArrayList<Count>();
 	
-	private ArrayList<Count> transactionList = new ArrayList<Count>();
+	private ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
 	
 	//private static ArrayList<String> orderList=null;
 
@@ -60,40 +78,32 @@ public class Account {
 			
 		}
 		
-		public ArrayList<Count> getTransactionList() {
+		public ArrayList<Transaction> getTransactionList() {
 			
 			
 
-			countList = new ArrayList<Count>();
+			transactionList = new ArrayList<Transaction>();
 			try {
-			
-			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-			Map<String, Object> sessionMap = externalContext.getSessionMap();
-			String userid=sessionMap.get("userid").toString();
 				
 			Connection con=DatabaseConnection.getConnection();
 			// Get a prepared SQL statement
-			String sql = "SELECT * from stock_count WHERE userid = ?";
+			String sql = "SELECT * from account_history";
 			PreparedStatement st = con.prepareStatement(sql);
-			st.setString(1,userid);
 			// Execute the statement
 			ResultSet rs = st.executeQuery();
 			rs.beforeFirst();
 			
 			while(rs.next())
 			{
-				countList.add((new Count(rs.getString("symbol"),rs.getString("count"))));
+				transactionList.add((new Transaction(rs.getString("symbol"),rs.getString("price"),rs.getString("count"),(Double.parseDouble(rs.getString("price"))*Integer.parseInt(rs.getString("count")))+"",rs.getString("manager_commission"),rs.getString("buy_or_sell"))));
 			}
-			
-			
-			
 			
 			}catch(Exception e)
 			{
 				e.printStackTrace();
 			}
 			
-			return countList;
+			return transactionList;
 			
 		}
 
