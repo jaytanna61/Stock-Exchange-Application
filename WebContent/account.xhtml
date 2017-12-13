@@ -24,7 +24,6 @@
 		<meta name="viewport" content="width=device-width,intial-scale=1"/>
 		<meta http-equiv="X-UA-Conpatible" content="IE=edge"/>
 
-	<title>Main Page</title>
 </h:head>
 <h:body>
 	<c:choose>
@@ -36,7 +35,7 @@
 		<div class="container" style="margin-top: 10px">
 			<div class="navbar navbar-inverse">
 				<div class="navbar-brand">
-					Welcome #{login.name}
+					Your Account
 				</div>
 				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
 					<h:commandButton type="submit" value="Log out" action="#{login.logout}" styleClass="btn btn-primary navbar-inverse">
@@ -46,39 +45,54 @@
 					<h:commandButton type="submit" value="Watch-list" action="#{login.watchlist}" styleClass="btn btn-primary navbar-inverse">
 					</h:commandButton>
 				</div>
-				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
-					<h:commandButton type="submit" value="Account" action="#{login.account}" styleClass="btn btn-primary navbar-inverse">
-					</h:commandButton>
-				</div>
 			</div>				
 		</div>
-		
+		<h4><b>Stocks Owned</b></h4>
 		<table>
     		<tr>
-    			<th>Company Name</th>
     			<th>Symbol</th>
-    			<th>Price</th>
-    			<th>Volume</th>
+    			<th>Stock Count</th>
     		</tr>
     		<tbody>
-	    		<ui:repeat var="o" value="#{stock_main.stockList}" varStatus="status">
+	    		<ui:repeat var="o" value="#{account.countList}" varStatus="status">
 	    		        <h:panelGroup>
 	    			  <tr>
-		    			<td>#{o.companyName}</td>
 		    			<td>#{o.symbol}</td>
-		    			<td>#{o.price}</td>
-		    			<td>#{o.volume}</td>
-		    			<td>
-		    			<h:commandButton  type="submit" value="Add To Watchlist" action="#{o.addToWatchlist}" styleClass="btn btn-primary navbar-inverse">
-		    				
-		    			</h:commandButton>
-		    			
-		    			</td>
+		    			<td>#{o.count}</td>
 		    		  </tr>
 	    			</h:panelGroup>
 	    		</ui:repeat>
     		</tbody>
-    </table>
+	    </table>
+	    
+	    
+	    <br/>
+	    
+	    <table>
+    		<tr>
+    			<th>Symbol</th>
+    			<th>Price</th>
+    			<th>Count</th>
+    			<th>Cost</th>
+    			<th>Manager Commission </th>
+    			<th>Buy/Sell</th>
+    		</tr>
+    		<tbody>
+	    		<ui:repeat var="o" value="#{account.transactionList}" varStatus="status">
+	    		        <h:panelGroup>
+	    			  <tr>
+		    			<td>#{o.symbol}</td>
+		    			<td>#{o.price}</td>
+		    			<td>#{o.count}</td>
+		    			<td>#{o.cost}</td>
+		    			<td>#{o.commission}</td>
+		    			<td>#{o.buy_or_sell}</td>
+		    		  </tr>
+	    			</h:panelGroup>
+	    		</ui:repeat>
+    		</tbody>
+	    </table>
+	    
 	</h:form>
 	</c:otherwise>
 	</c:choose>

@@ -141,4 +141,16 @@ public class Login {
 		}
 		return "true";
 	}
+	
+	public String account() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+		        .getExternalContext();
+		try {
+		externalContext.redirect(externalContext.getRequestContextPath()
+	            + "/faces/account.xhtml");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return "true";
+	}
 }

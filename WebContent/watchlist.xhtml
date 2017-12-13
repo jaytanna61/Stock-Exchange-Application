@@ -49,26 +49,26 @@
 			</div>				
 		</div>
 		
-		<table class="order-table">
+		<table>
     		<tr>
-    			<th class="order-table-header">Company Name</th>
-    			<th class="order-table-header">Symbol</th>
-    			<th class="order-table-header">Price</th>
-    			<th class="order-table-header">Volume</th>
+    			<th>Company Name</th>
+    			<th>Symbol</th>
+    			<th>Price</th>
+    			<th>Volume</th>
     		</tr>
     		<tbody>
 	    		<ui:repeat var="o" value="#{watchlist.stockList}" varStatus="status">
 	    		        <h:panelGroup>
 	    			  <tr>
-		    			<td class="order-table-odd-row">#{o.companyName}</td>
-		    			<td class="order-table-odd-row">#{o.symbol}</td>
-		    			<td class="order-table-odd-row">#{o.price}</td>
-		    			<td class="order-table-odd-row">#{o.volume}</td>
-		    			<td class="order-table-odd-row">
+		    			<td>#{o.companyName}</td>
+		    			<td>#{o.symbol}</td>
+		    			<td>#{o.price}</td>
+		    			<td>#{o.volume}</td>
+		    			<td>
 		    			<h:commandButton  type="submit" value="Buy" action="#{o.buy}" styleClass="btn btn-primary navbar-inverse">
 		    			</h:commandButton>
 		    			</td>
-		    			<td class="order-table-odd-row">
+		    			<td>
 		    			<h:commandButton  type="submit" value="Sell" action="#{o.sell}" styleClass="btn btn-primary navbar-inverse">
 		    			</h:commandButton>
 		    			</td>
