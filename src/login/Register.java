@@ -140,6 +140,74 @@ public class Register {
 		return "true";
 	}
 	
+	
+	
+public String registerManager() {
+		
+		boolean valid=validateManagerID(this.userid);
+		
+		if(!valid)
+		{
+		Connection con = null;
+		try {
+			// Get a connection object
+			con=DatabaseConnection.getConnection();
+
+			// Get a prepared SQL statement
+			String sql = "INSERT into manager (name,email,managerid,password,commission,licence,activated) VALUES (?,?,?,?,?,?,?)";
+			PreparedStatement st = con.prepareStatement(sql);
+			//st.setInt(1, 1);
+			st.setString(1,this.name);
+			st.setString(2, this.email);
+			st.setString(3,this.userid);
+			st.setString(4, this.password);
+			st.setString(5, this.commission);
+			st.setString(6, this.license);
+			st.setString(7, "false");
+			
+			// Execute the statement
+			st.executeUpdate();
+			//JOptionPane.showMessageDialog(null, "User Registered");
+			
+			FacesContext.getCurrentInstance().addMessage(
+					"login_form:password",
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Registration Successful",
+							"User Registered"));
+			Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+			flash.setKeepMessages(true);
+			
+			
+			signinUser();
+
+			// Iterate through results
+			/*if (rs.next()) {
+				System.out.println("First Name is: " + rs.getString("first_name"));
+				this.name = rs.getString("first_name");
+			}*/
+		} catch (Exception e) {
+			System.err.println("Exception: " + e.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+			}
+		}
+		}
+		else
+		{
+			FacesContext.getCurrentInstance().addMessage(
+					"register_form:userid",
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Username Exists",
+							"Username ALready exits"));
+		}
+		
+		return "true";
+	}
+
+
+	
 	public String signinUser() {
 		
 		ExternalContext externalContext = FacesContext.getCurrentInstance()
@@ -194,4 +262,46 @@ public class Register {
 		return false;
 		
 	}
+	
+	public boolean validateManagerID(String userid)
+	{
+		
+		Connection con = null;
+		try {
+			// Setup the DataSource object
+			com.mysql.jdbc.jdbc2.optional.MysqlDataSource ds = new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
+			ds.setServerName("localhost");
+			ds.setPortNumber(3306);
+			ds.setDatabaseName("user");
+			ds.setUser("root");
+			ds.setPassword("admin");
+
+			// Get a connection object
+			con = ds.getConnection();
+
+			// Get a prepared SQL statement
+			String sql = "SELECT name from manager where managerid = ?";
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1,userid);
+
+			// Execute the statement
+			ResultSet rs = st.executeQuery();
+
+			// Iterate through results
+			if (rs.next()) {
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			System.err.println("Exception: " + e.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+			}
+		}
+		return false;
+		
+	}
+	
 }

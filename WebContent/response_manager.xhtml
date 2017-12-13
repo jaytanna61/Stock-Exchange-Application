@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://xmlns.jcp.org/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
+
+	<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+		<style type="text/css">
+		    #wrapper {
+			  text-align: center;
+			}
+		</style>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width,intial-scale=1"/>
+		<meta http-equiv="X-UA-Conpatible" content="IE=edge"/>
+
+	<title>Main Page</title>
+</h:head>
+<h:body>
+	<c:choose>
+	<c:when test="#{sessionScope.userid == null}">
+	<h3> You Are Not Logged in</h3>
+	</c:when>
+	<c:otherwise>
+	<h:form styleClass="form-horizontal">
+		<div class="container" style="margin-top: 10px">
+			<div class="navbar navbar-inverse">
+				<div class="navbar-brand">
+					Welcome #{login.name}
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Log out" action="#{login.logout}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Client-requests" action="#{login.watchlist}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Watch-list" action="#{login.watchlist}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Account" action="#{login.account}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Home" action="#{login.home}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+			</div>				
+		</div>
+		<div align="center">
+		<table>
+    		<tr>
+    			<th style="padding:0 30px 0 30px;">Company Name</th>
+    			<th style="padding:0 30px 0 30px;">Symbol</th>
+    			<th style="padding:0 30px 0 30px;">Price</th>
+    			<th style="padding:0 30px 0 30px;">Volume</th>
+    		</tr>
+    		<tbody>
+	    		<ui:repeat var="o" value="#{stock_main.stockList}" varStatus="status">
+	    		        <h:panelGroup>
+	    			  <tr>
+		    			<td style="padding:0 30px 0 30px;">#{o.companyName}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.symbol}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.price}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.volume}</td>
+		    			<td>
+		    			<h:commandButton  type="submit" value="Add To Watchlist" action="#{o.addToWatchlist}" styleClass="btn btn-primary navbar-inverse">
+		    				
+		    			</h:commandButton>
+		    			
+		    			</td>
+		    		  </tr>
+	    			</h:panelGroup>
+	    		</ui:repeat>
+    		</tbody>
+    	</table>
+    	</div>>
+	</h:form>
+	</c:otherwise>
+	</c:choose>
+	
+	
+	
+</h:body>
+</html>

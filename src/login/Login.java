@@ -49,17 +49,8 @@ public class Login {
 		
 		Connection con = null;
 		try {
-			// Setup the DataSource object
-			com.mysql.jdbc.jdbc2.optional.MysqlDataSource ds = new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
-			ds.setServerName("localhost");
-			ds.setPortNumber(3306);
-			ds.setDatabaseName("user");
-			ds.setUser("root");
-			ds.setPassword("admin");
 
-			// Get a connection object
-			con = ds.getConnection();
-
+			con=DatabaseConnection.getConnection();
 			// Get a prepared SQL statement
 			String sql = "SELECT name from user_table where userid = ? and password = ?";
 			PreparedStatement st = con.prepareStatement(sql);
@@ -94,6 +85,53 @@ public class Login {
 			}
 			else
 			{
+				con=DatabaseConnection.getConnection();
+				// Get a prepared SQL statement
+				sql = "SELECT name,activated from manager where managerid = ? and password = ?";
+				st = con.prepareStatement(sql);
+				st.setString(1,this.userid);
+				st.setString(2, this.password);
+
+				// Execute the statement
+				rs = st.executeQuery();
+				rs.beforeFirst();
+
+				// Iterate through results
+				
+				if (rs.next()) {
+					
+					if(rs.getString("activated").equals("true"))
+					{
+					//AlphaVantage.getData();
+					
+					ExternalContext externalContext = FacesContext.getCurrentInstance()
+					        .getExternalContext();
+					this.setName(rs.getString("name"));
+					/*HttpSession session = SessionUtils.getSession();
+					session.setAttribute("username", this.userid);*/
+					FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userid",this.userid);
+					try {
+						    externalContext.redirect(externalContext.getRequestContextPath()
+						            + "/faces/response_manager.xhtml");
+						    return "true";
+				
+					} catch (IOException e) {
+					    // TODO Auto-generated catch block
+					    e.printStackTrace();
+					    return "false";
+					}
+					}
+					else
+					{
+						FacesContext.getCurrentInstance().addMessage(
+								"login_form:password",
+								new FacesMessage(FacesMessage.SEVERITY_WARN,
+										"Not Approved yet",
+										"Not a Approved Manager yet"));
+					}
+				}
+				else
+				{
 				//JOptionPane.showMessageDialog(null, "Username or Password is incorrect");
 				/*FacesMessage fmsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Authentication failed", "UserID or Password is incorrect.");
 				 throw new ValidatorException(fmsg);*/
@@ -102,7 +140,9 @@ public class Login {
 						new FacesMessage(FacesMessage.SEVERITY_WARN,
 								"Incorrect Username and Passowrd",
 								"Username or password is incorrect"));
-			}
+			
+				}
+				}
 		}catch (Exception e) {
 			System.err.println("Exception: " + e.getMessage());
 		} finally {

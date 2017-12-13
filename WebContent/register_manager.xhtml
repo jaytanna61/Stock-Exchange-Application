@@ -103,18 +103,37 @@
 				</div>
 			
 			</div>
+			
+			
+			<div class="form-group">
+				<h:outputLabel value="License Number :"  styleClass="control-label col-sm-5"></h:outputLabel>
+				<div class="col-sm-3">
+				<h:inputText id="license" value="#{register.license}" styleClass="form-control" title="License" tabindex="2" required="true" 
+				requiredMessage="Please enter your License Number."/>
+				<h:message id="licenseMessage" for="license" style="color:red"/>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<h:outputLabel value="Commission :"  styleClass="control-label col-sm-5"></h:outputLabel>
+				<div class="col-sm-3">
+				<h:inputText id="commission" value="#{register.commission}" styleClass="form-control" title="Commission" tabindex="2" required="true" 
+				requiredMessage="Please enter your Commission."/>
+				<h:message id="commissionMessage" for="commission" style="color:red"/>
+				</div>
+			</div>
 		
 			<div class="form-group" align="center" >
 
-				<h:commandButton value="Register" type="submit" action="#{register.registerUser()}" styleClass="btn btn-primary navbar-inverse">
+				<h:commandButton value="Register" type="submit" action="#{register.registerManager()}" styleClass="btn btn-primary navbar-inverse">
 				</h:commandButton>
 				
 			</div>
 			
 			<div class="form-group" style="center" >
 			
-			<h:outputLabel value="Manager?"></h:outputLabel>
-			<h:link value="Click Here!!" outcome="register_manager"></h:link>
+			<h:outputLabel value="Client?"></h:outputLabel>
+			<h:link value="Click Here!!" outcome="register"></h:link>
 			
 			</div>
 			
