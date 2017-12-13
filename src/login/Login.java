@@ -194,6 +194,18 @@ public class Login {
 		return "true";
 	}
 	
+	public String managers() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+		        .getExternalContext();
+		try {
+		externalContext.redirect(externalContext.getRequestContextPath()
+	            + "/faces/manager_details.xhtml");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return "true";
+	}
+	
 	public String home() {
 		ExternalContext externalContext = FacesContext.getCurrentInstance()
 		        .getExternalContext();

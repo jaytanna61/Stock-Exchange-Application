@@ -153,6 +153,79 @@ public class DAO {
 		return null;
 	}
 	
+	public String getManagerName(String managerid)
+	{
+		
+		con=DatabaseConnection.getConnection();
+		String sql = "SELECT name FROM manager WHERE managerid = ? " ;
+		PreparedStatement st;
+		try {
+			st = con.prepareStatement(sql);
+			st.setString(1, managerid);
+			ResultSet rs =st.executeQuery();
+			rs.beforeFirst();
+			if(rs.next())
+			{
+				String name=rs.getString("name");
+				return name;
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public String getManagerEmail(String managerid)
+	{
+		con=DatabaseConnection.getConnection();
+		String sql = "SELECT email FROM manager WHERE managerid = ? " ;
+		PreparedStatement st;
+		try {
+			st = con.prepareStatement(sql);
+			st.setString(1, managerid);
+			ResultSet rs =st.executeQuery();
+			rs.beforeFirst();
+			if(rs.next())
+			{
+				String email=rs.getString("email");
+				return email;
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public String getManagerCommission(String managerid)
+	{
+		con=DatabaseConnection.getConnection();
+		String sql = "SELECT commission FROM manager WHERE managerid = ? " ;
+		PreparedStatement st;
+		try {
+			st = con.prepareStatement(sql);
+			st.setString(1, managerid);
+			ResultSet rs =st.executeQuery();
+			rs.beforeFirst();
+			if(rs.next())
+			{
+				String commission=rs.getString("commission");
+				return commission;
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	public boolean buyStocks(String userid,String managerid,String commission,String Symbol,String count,String price,Double cost)
 	{
 		con=DatabaseConnection.getConnection();

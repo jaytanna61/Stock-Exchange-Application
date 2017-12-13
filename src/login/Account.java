@@ -17,7 +17,79 @@ import java.util.Map;
 @ApplicationScoped
 public class Account {
 	
-	String balance;
+	String balance,manager_name,manager_id,manager_email,manager_commission;
+	
+	
+	
+	public String getManager_id() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		Map<String, Object> sessionMap = externalContext.getSessionMap();
+		String userid=sessionMap.get("userid").toString();
+		
+		DAO dao=DAO.getInstance();
+		manager_id=dao.getManager(userid);
+		return manager_id;
+	}
+
+	public void setManager_id(String manager_id) {
+		this.manager_id = manager_id;
+	}
+
+	public String getManager_name() {
+		
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		Map<String, Object> sessionMap = externalContext.getSessionMap();
+		String userid=sessionMap.get("userid").toString();
+		
+		DAO dao=DAO.getInstance();
+		String managerid=dao.getManager(userid);
+		manager_name=dao.getManagerName(managerid);
+		
+		return manager_name;
+	}
+
+	public void setManager_name(String manager_name) {
+		this.manager_name = manager_name;
+	}
+	
+
+	public String getManager_email() {
+		
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		Map<String, Object> sessionMap = externalContext.getSessionMap();
+		String userid=sessionMap.get("userid").toString();
+		
+		DAO dao=DAO.getInstance();
+		String managerid=dao.getManager(userid);
+		manager_email=dao.getManagerEmail(managerid);
+		
+		return manager_email;
+	}
+
+	public void setManager_email(String manager_email) {
+		this.manager_email = manager_email;
+	}
+
+	public String getManager_commission() {
+		
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		Map<String, Object> sessionMap = externalContext.getSessionMap();
+		String userid=sessionMap.get("userid").toString();
+		
+		DAO dao=DAO.getInstance();
+		String managerid=dao.getManager(userid);
+		manager_commission=dao.getManagerCommission(managerid);
+		
+		return manager_commission + "%";
+	}
+
+	public void setManager_commission(String manager_commission) {
+		this.manager_commission = manager_commission;
+	}
+
+	public void setBalance(String balance) {
+		this.balance = balance;
+	}
 	
 	public String getBalance() {
 		
@@ -29,10 +101,6 @@ public class Account {
 		balance=dao.getBalance(userid)+"";
 		
 		return balance;
-	}
-
-	public void setBalance(String balance) {
-		this.balance = balance;
 	}
 
 	private ArrayList<Count> countList = new ArrayList<Count>();
