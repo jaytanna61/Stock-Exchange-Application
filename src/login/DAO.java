@@ -129,6 +129,30 @@ public class DAO {
 		return 0.00;
 	}
 	
+	public String getManager(String userid)
+	{
+		con=DatabaseConnection.getConnection();
+		String sql = "SELECT managerid FROM user_table WHERE userid = ? " ;
+		PreparedStatement st;
+		try {
+			st = con.prepareStatement(sql);
+			st.setString(1, userid);
+			ResultSet rs =st.executeQuery();
+			rs.beforeFirst();
+			if(rs.next())
+			{
+				String managerid=rs.getString("managerid");
+				return managerid;
+			}
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	public boolean buyStocks(String userid,String managerid,String commission,String Symbol,String count,String price,Double cost)
 	{
 		con=DatabaseConnection.getConnection();
@@ -257,4 +281,55 @@ public class DAO {
 		
 		return false;
 	}
+	
+	
+	public boolean buyStockRequest(String userid,String managerid,String symbol, String count)
+	{
+		String insert_request = "INSERT into client_request (userid,managerid,symbol,number,buy_or_sell) VALUES (?,?,?,?,?)";
+	
+		//st.setInt(1, 1);
+	
+		try {
+			PreparedStatement insert_request_st = con.prepareStatement(insert_request);
+			insert_request_st.setString(1,userid);
+			insert_request_st.setString(2, managerid);
+			insert_request_st.setString(3,symbol);
+			insert_request_st.setString(4,count);
+			insert_request_st.setString(5,"Buy");
+			insert_request_st.executeUpdate();
+			
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	public boolean sellStockRequest(String userid,String managerid,String symbol, String count)
+	{
+		String insert_request = "INSERT into client_request (userid,managerid,symbol,number,buy_or_sell) VALUES (?,?,?,?,?)";
+	
+		//st.setInt(1, 1);
+	
+		try {
+			PreparedStatement insert_request_st = con.prepareStatement(insert_request);
+			insert_request_st.setString(1,userid);
+			insert_request_st.setString(2, managerid);
+			insert_request_st.setString(3,symbol);
+			insert_request_st.setString(4,count);
+			insert_request_st.setString(5,"Sell");
+			insert_request_st.executeUpdate();
+			
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	
 }

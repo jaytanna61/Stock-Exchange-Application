@@ -33,6 +33,9 @@ public class BuyStock {
 		String Symbol=sessionMap.get("symbol").toString();
 		return Symbol;
 	}
+	
+
+	
 
 
 
@@ -60,6 +63,31 @@ public class BuyStock {
 		else
 		{
 			
+		}
+		
+		return null;
+	}
+	
+	public String buyRequest()
+	{
+		
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		Map<String, Object> sessionMap = externalContext.getSessionMap();
+		String userid=sessionMap.get("userid").toString();
+		Double cost= Integer.parseInt(getNumberOfStocks()) * Double.parseDouble(getPrice());
+		DAO dao=DAO.getInstance();
+		
+		Double balance=dao.getBalance(userid);
+		
+		String managerid=dao.getManager(userid);
+		
+		if(managerid != null && cost <= balance)
+		{
+			dao.buyStockRequest(userid,managerid,getSymbol(),getNumberOfStocks());
+		}
+		else
+		{
+			System.out.println("IN");
 		}
 		
 		return null;

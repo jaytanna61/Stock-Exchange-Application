@@ -77,5 +77,26 @@ public class SellStock {
 		return null;
 	}
 	
+	public String sellRequest()
+	{
+		
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		Map<String, Object> sessionMap = externalContext.getSessionMap();
+		String userid=sessionMap.get("userid").toString();
+		DAO dao=DAO.getInstance();
+		String managerid=dao.getManager(userid);
+		
+		if(managerid != null && Integer.parseInt(requestedCount) <= Integer.parseInt(getCount()))
+		{
+			dao.sellStockRequest(userid,managerid,getSymbol(),getCount());
+		}
+		else
+		{
+			System.out.println("IN");
+		}
+		
+		return null;
+	}
+	
 
 }
