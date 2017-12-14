@@ -132,15 +132,47 @@ public class Login {
 				}
 				else
 				{
-				//JOptionPane.showMessageDialog(null, "Username or Password is incorrect");
-				/*FacesMessage fmsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Authentication failed", "UserID or Password is incorrect.");
-				 throw new ValidatorException(fmsg);*/
+					con=DatabaseConnection.getConnection();
+					// Get a prepared SQL statement
+					sql = "SELECT adminid from admin where adminid = ? and password = ?";
+					st = con.prepareStatement(sql);
+					st.setString(1,this.userid);
+					st.setString(2, this.password);
+
+					// Execute the statement
+					rs = st.executeQuery();
+					rs.beforeFirst();
+
+					
+					
+					
+				if(rs.next()) {
+
+					ExternalContext externalContext = FacesContext.getCurrentInstance()
+					        .getExternalContext();
+					this.setName(rs.getString("adminid"));
+					/*HttpSession session = SessionUtils.getSession();
+					session.setAttribute("username", this.userid);*/
+					FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userid",this.userid);
+					try {
+						    externalContext.redirect(externalContext.getRequestContextPath()
+						            + "/faces/response_admin.xhtml");
+						    return "true";
+				
+					} catch (IOException e) {
+					    // TODO Auto-generated catch block
+					    e.printStackTrace();
+					    return "false";
+					}
+					
+				}
+				else {
 				FacesContext.getCurrentInstance().addMessage(
 						"login_form:password",
 						new FacesMessage(FacesMessage.SEVERITY_WARN,
 								"Incorrect Username and Passowrd",
 								"Username or password is incorrect"));
-			
+				}
 				}
 				}
 		}catch (Exception e) {
