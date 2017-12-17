@@ -74,6 +74,7 @@ public class stockMain {
 				Map<String, Object> sessionMap = externalContext.getSessionMap();
 				String userid=sessionMap.get("userid").toString();
 				DAO dao=DAO.getInstance();
+				System.out.println(symbol+":"+userid);
 				
 				dao.addToWatchlist(userid, this.symbol);
 				
