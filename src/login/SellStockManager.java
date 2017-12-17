@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
@@ -14,18 +13,16 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 
-@ManagedBean(name="buystock_manager")
+
+@ManagedBean(name="sellstock_manager")
 @ApplicationScoped
-public class BuyStockManager {
+public class SellStockManager {
 	
-	String symbol,price,numberOfStocks,user;
-	
+	String symbol,price,requestedCount,user;
 	
 	public String getUser() {
 		return user;
 	}
-
-
 
 	public void setUser(String user) {
 		this.user = user;
@@ -66,21 +63,16 @@ public class BuyStockManager {
 		}
 		return userList;
 	}
-
-
-
-
-	public String getNumberOfStocks() {
-		return numberOfStocks;
+	
+	public String getRequestedCount() {
+		return requestedCount;
 	}
 
 
 
-	public void setNumberOfStocks(String numberOfStocks) {
-		this.numberOfStocks = numberOfStocks;
+	public void setRequestedCount(String requestedCount) {
+		this.requestedCount = requestedCount;
 	}
-
-
 
 	public String getSymbol() {
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -88,9 +80,6 @@ public class BuyStockManager {
 		String Symbol=sessionMap.get("symbol").toString();
 		return Symbol;
 	}
-	
-
-	
 
 
 
@@ -100,44 +89,46 @@ public class BuyStockManager {
 		return price;
 	}
 
+	
 
 
-	public String buyStock()
+	public String sellStock()
 	{
-		
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		Map<String, Object> sessionMap = externalContext.getSessionMap();
 		String managerid=sessionMap.get("userid").toString();
-		Double cost= Integer.parseInt(getNumberOfStocks()) * Double.parseDouble(getPrice());
+		
 		DAO dao=DAO.getInstance();
-		Double balance=dao.getBalance(user);
-		
+		Double cost=Integer.parseInt(requestedCount) * Double.parseDouble(getPrice());
 		Double commission_per=Double.parseDouble(dao.getManagerCommission(managerid));
-		
 		Double commission=(cost*commission_per)/100;
-		if((cost+commission) <= balance)
+		
+		if( Integer.parseInt(requestedCount) <= Integer.parseInt(dao.getCount(user,getSymbol())))
 		{
-			dao.buyStocks(user,managerid,commission,getSymbol(),getNumberOfStocks(),getPrice(),cost);
+			
+			dao.sellStocks(user,managerid,commission,getSymbol(),requestedCount,getPrice(),cost);
 			FacesContext.getCurrentInstance().addMessage(
-					"buy_stock_form:count",
+					"sell_stock_form:count",
 					new FacesMessage(FacesMessage.SEVERITY_WARN,
-							"Purchase done",
-							"Purchase done"));
+							"Sell done",
+							"Sell done"));
 			Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
 			flash.setKeepMessages(true);
 		}
 		else
 		{
 			FacesContext.getCurrentInstance().addMessage(
-					"buy_stock_form:count",
+					"sell_stock_form:count",
 					new FacesMessage(FacesMessage.SEVERITY_WARN,
-							"Customer does not have enough funds",
-							"Customer does not have enough funds"));
+							"Customer does not have enough number of stocks to sell",
+							"Customer does not have enough number of stocks to sell"));
 			Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
 			flash.setKeepMessages(true);
 		}
 		
 		return null;
 	}
+	
+	
 
 }

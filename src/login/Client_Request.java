@@ -44,7 +44,7 @@ public class Client_Request {
 		
 			while(rs.next())
 			{	
-				requestList.add((new Request(rs.getString("userid"),rs.getString("symbol"), 
+				requestList.add((new Request(rs.getString("requestid"),rs.getString("userid"),rs.getString("symbol"), 
 						rs.getString("number"),rs.getString("buy_or_sell"))));
 				//orderList.add(rs.getString(i));
 			}
@@ -62,10 +62,19 @@ public class Client_Request {
 	 
 		public static class Request{
 			
-			String userid,symbol,count,buy_or_sell;
+			String reqid,userid,symbol,count,buy_or_sell;
 			
 			
-			public Request(String userid, String symbol, String count, String buy_or_sell) {
+			public String getReqid() {
+				return reqid;
+			}
+
+			public void setReqid(String reqid) {
+				this.reqid = reqid;
+			}
+
+			public Request(String reqid,String userid, String symbol, String count, String buy_or_sell) {
+				this.reqid=reqid;
 				this.userid = userid;
 				this.symbol = symbol;
 				this.count = count;
@@ -106,7 +115,7 @@ public class Client_Request {
 
 			public String done() {
 				//String bid=event.getComponent().getId();
-				//System.out.println(symbol);
+				System.out.println(reqid);
 				
 				ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 				Map<String, Object> sessionMap = externalContext.getSessionMap();
@@ -115,13 +124,12 @@ public class Client_Request {
 				
 				Connection con=DatabaseConnection.getConnection();
 				// Get a prepared SQL statement
-				String update_status = "UPDATE client_request SET status = ? WHERE userid =  ? and symbol =?";
+				String update_status = "UPDATE client_request SET status = ? WHERE requestid =  ?";
 				PreparedStatement st;
 				try {
 					st = con.prepareStatement(update_status);
 					st.setString(1,"Done");
-					st.setString(2, userid);
-					st.setString(3, symbol);
+					st.setString(2, reqid);
 /*					st.setString(3, managerid);
 					st.setString(4, symbol);
 					st.setString(5, count);

@@ -121,7 +121,7 @@ public class WatchlistManager {
 				        .getExternalContext();
 				try {
 				externalContext.redirect(externalContext.getRequestContextPath()
-			            + "/faces/sellstock.xhtml");
+			            + "/faces/sellstock_manager.xhtml");
 				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("symbol",this.symbol);
 				}catch(IOException e) {
 					e.printStackTrace();
