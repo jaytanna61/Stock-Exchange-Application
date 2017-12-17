@@ -246,13 +246,15 @@ public class DAO {
 			rs.beforeFirst();
 			if(rs.next())
 			{
+				
 				// Get a prepared SQL statement
-				String update_count = "INSERT into stock_count (userid,symbol,count) VALUES (?,?,?)";
+				String update_count = "UPDATE stock_count set count = ? WHERE userid = ? and  symbol = ?";
 				PreparedStatement uodate_count_st = con.prepareStatement(update_count);
 				//st.setInt(1, 1);
-				uodate_count_st.setString(1,userid);
-				uodate_count_st.setString(2, Symbol);
-				uodate_count_st.setString(3,Integer.parseInt(count)+rs.getInt("count")+"");
+				uodate_count_st.setString(1,Integer.parseInt(count)+rs.getInt("count")+"");
+				uodate_count_st.setString(2,userid);
+				uodate_count_st.setString(3, Symbol);
+				
 				uodate_count_st.executeUpdate();
 			}
 			else 
