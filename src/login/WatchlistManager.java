@@ -129,6 +129,20 @@ public class WatchlistManager {
 				return "true";
 			}
 			
+			public String viewHistory() {
+				ExternalContext externalContext = FacesContext.getCurrentInstance()
+				        .getExternalContext();
+				try {
+				externalContext.redirect(externalContext.getRequestContextPath()
+			            + "/faces/stock_history_manager.xhtml");
+				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("symbol",this.symbol);
+				}catch(IOException e) {
+					e.printStackTrace();
+				}
+				return "true";
+				
+			}
+			
 			public Stock(String companyName, String symbol, 
 					BigDecimal price, int volume) {
 				this.companyName = companyName;

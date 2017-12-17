@@ -24,6 +24,7 @@ public class AlphaVantage {
 		
 	}
 	
+	
 	public static void getData() {
 		String price=null;
 		int volume=0;
@@ -45,8 +46,9 @@ public class AlphaVantage {
 
 				// Core settings are here, put what ever API parameter you want to use
 				WebTarget target= client.target("https://www.alphavantage.co/query")
-				   .queryParam("function", "TIME_SERIES_WEEKLY")
+				   .queryParam("function", "TIME_SERIES_INTRADAY")
 				   .queryParam("symbol", rs.getString("symbol"))
+				   .queryParam("interval","1min")
 				   .queryParam("apikey", Key);
 				// Actually calling API here, Use HTTP GET method
 				// data is the response JSON string
@@ -64,18 +66,18 @@ public class AlphaVantage {
 					assert metadata.isObject();
 					// Read "2. Symbol" property of "Meta Data" property
 					if (metadata.get("2. Symbol").isValueNode()) {
-						System.out.println(metadata.get("2. Symbol").asText());
-						System.out.println(metadata);
+						//System.out.println(metadata.get("2. Symbol").asText());
+						//System.out.println(metadata);
 					}
 					// Print "4. Time Zone" property of "Meta Data" property of root JSON object
 					//System.out.println(root.at("/Meta Data/4. Time Zone").asText());
 					// Read "Weekly Time Series" property of root JSON object
-					Iterator<String> dates = root.get("Weekly Time Series").fieldNames();
-					JsonNode first=root.get("Weekly Time Series");
+					Iterator<String> dates = root.get("Time Series (1min)").fieldNames();
+					JsonNode first=root.get("Time Series (1min)");
 					JsonNode Second=first.get(dates.next());
-					price=Second.get("1. open").asText();
+					price=Second.get("4. close").asText();
 					volume=Second.get("5. volume").asInt();
-					
+					//System.out.println(price+":"+volume);
 					String inner_sql = "UPDATE SYMBOLS SET PRICE = ? , VOLUME = ? WHERE SYMBOL = ?";;
 					PreparedStatement inner_st = con.prepareStatement(inner_sql);
 					inner_st.setString(1,price);
@@ -83,6 +85,58 @@ public class AlphaVantage {
 					inner_st.setString(3,rs.getString("symbol"));
 					// Execute the statement
 					inner_st.executeUpdate();
+					
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 	
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			}
+}
+	
+	
+	public static JsonNode getWeekData(String Symbol) {
+		String price=null;
+		int volume=0;
+		
+		try {
+
+				Client client= ClientBuilder.newClient();
+
+				// Core settings are here, put what ever API parameter you want to use
+				WebTarget target= client.target("https://www.alphavantage.co/query")
+				   .queryParam("function", "TIME_SERIES_WEEKLY")
+				   .queryParam("symbol", Symbol)
+				   .queryParam("apikey", Key);
+				// Actually calling API here, Use HTTP GET method
+				// data is the response JSON string
+				String data = target.request(MediaType.APPLICATION_JSON).get(String.class);
+				
+				try {
+					// Use Jackson to read the JSON into a tree like structure
+					ObjectMapper mapper = new ObjectMapper();
+					JsonNode root = mapper.readTree(data);
+					
+					// Make sure the JSON is an object, as said in their documents
+					assert root.isObject();
+					// Read the "Meta Data" property of JSON object
+					JsonNode metadata = root.get("Meta Data");
+					assert metadata.isObject();
+					// Read "2. Symbol" property of "Meta Data" property
+					if (metadata.get("2. Symbol").isValueNode()) {
+						//System.out.println(metadata.get("2. Symbol").asText());
+						//System.out.println(metadata);
+					}
+					// Print "4. Time Zone" property of "Meta Data" property of root JSON object
+					//System.out.println(root.at("/Meta Data/4. Time Zone").asText());
+					// Read "Weekly Time Series" property of root JSON object
+					
+					return root;
+
 					
 					/*while(dates.hasNext()) {
 						// Read the first date's open price
@@ -99,12 +153,217 @@ public class AlphaVantage {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} 	
-			}
+			
 			
 		}catch(Exception e) {
 			e.printStackTrace();
 			}
+		return null;
 		}
+
+
+public static JsonNode get1minData(String Symbol) {
+	String price=null;
+	int volume=0;
+	
+	try {
+
+			Client client= ClientBuilder.newClient();
+
+			// Core settings are here, put what ever API parameter you want to use
+			WebTarget target= client.target("https://www.alphavantage.co/query")
+					   .queryParam("function", "TIME_SERIES_INTRADAY")
+					   .queryParam("symbol", Symbol)
+					   .queryParam("interval","1min")
+					   .queryParam("apikey", Key);
+			// Actually calling API here, Use HTTP GET method
+			// data is the response JSON string
+			String data = target.request(MediaType.APPLICATION_JSON).get(String.class);
+			
+			try {
+				// Use Jackson to read the JSON into a tree like structure
+				ObjectMapper mapper = new ObjectMapper();
+				JsonNode root = mapper.readTree(data);
+				
+				// Make sure the JSON is an object, as said in their documents
+				assert root.isObject();
+				// Read the "Meta Data" property of JSON object
+				JsonNode metadata = root.get("Meta Data");
+				assert metadata.isObject();
+				// Read "2. Symbol" property of "Meta Data" property
+				if (metadata.get("2. Symbol").isValueNode()) {
+					//System.out.println(metadata.get("2. Symbol").asText());
+					//System.out.println(metadata);
+				}
+				// Print "4. Time Zone" property of "Meta Data" property of root JSON object
+				//System.out.println(root.at("/Meta Data/4. Time Zone").asText());
+				// Read "Weekly Time Series" property of root JSON object
+				Iterator<String> dates = root.get("Time Series (1min)").fieldNames();
+				JsonNode first=root.get("Time Series (1min)");
+				JsonNode Second=first.get(dates.next());
+				price=Second.get("1. open").asText();
+				volume=Second.get("5. volume").asInt();
+				
+				return root;
+
+				
+				/*while(dates.hasNext()) {
+					// Read the first date's open price
+					JsonNode first=root.get("Weekly Time Series");
+					JsonNode Second=first.get(dates.next());
+					price=Second.get("1. open").asText();
+					System.out.println(Second);
+					//price = root.at("/Weekly Time Series/" + dates.next() + "/1. open");
+					System.out.println(Double.parseDouble(price));
+					// remove break if you wan't to print all the open prices.
+					break;
+				}*/
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 	
 		
+		
+	}catch(Exception e) {
+		e.printStackTrace();
+		}
+	return null;
 	}
+	
+
+public static JsonNode get60minData(String Symbol) {
+	String price=null;
+	int volume=0;
+	
+	try {
+
+			Client client= ClientBuilder.newClient();
+
+			// Core settings are here, put what ever API parameter you want to use
+			WebTarget target= client.target("https://www.alphavantage.co/query")
+					   .queryParam("function", "TIME_SERIES_INTRADAY")
+					   .queryParam("symbol", Symbol)
+					   .queryParam("interval","60min")
+					   .queryParam("apikey", Key);
+			// Actually calling API here, Use HTTP GET method
+			// data is the response JSON string
+			String data = target.request(MediaType.APPLICATION_JSON).get(String.class);
+			
+			try {
+				// Use Jackson to read the JSON into a tree like structure
+				ObjectMapper mapper = new ObjectMapper();
+				JsonNode root = mapper.readTree(data);
+				
+				// Make sure the JSON is an object, as said in their documents
+				assert root.isObject();
+				// Read the "Meta Data" property of JSON object
+				JsonNode metadata = root.get("Meta Data");
+				assert metadata.isObject();
+				// Read "2. Symbol" property of "Meta Data" property
+				if (metadata.get("2. Symbol").isValueNode()) {
+					//System.out.println(metadata.get("2. Symbol").asText());
+					//System.out.println(metadata);
+				}
+				// Print "4. Time Zone" property of "Meta Data" property of root JSON object
+				//System.out.println(root.at("/Meta Data/4. Time Zone").asText());
+				// Read "Weekly Time Series" property of root JSON object
+				Iterator<String> dates = root.get("Time Series (60min)").fieldNames();
+				JsonNode first=root.get("Time Series (60min)");
+				JsonNode Second=first.get(dates.next());
+				price=Second.get("1. open").asText();
+				volume=Second.get("5. volume").asInt();
+				
+				return root;
+
+				
+				/*while(dates.hasNext()) {
+					// Read the first date's open price
+					JsonNode first=root.get("Weekly Time Series");
+					JsonNode Second=first.get(dates.next());
+					price=Second.get("1. open").asText();
+					System.out.println(Second);
+					//price = root.at("/Weekly Time Series/" + dates.next() + "/1. open");
+					System.out.println(Double.parseDouble(price));
+					// remove break if you wan't to print all the open prices.
+					break;
+				}*/
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 	
+		
+		
+	}catch(Exception e) {
+		e.printStackTrace();
+		}
+	return null;
+	}
+
+public static JsonNode getDaysData(String Symbol) {
+	String price=null;
+	int volume=0;
+	
+	try {
+
+			Client client= ClientBuilder.newClient();
+
+			// Core settings are here, put what ever API parameter you want to use
+			WebTarget target= client.target("https://www.alphavantage.co/query")
+					   .queryParam("function", "TIME_SERIES_DAILY")
+					   .queryParam("symbol", Symbol)
+					   .queryParam("apikey", Key);
+			// Actually calling API here, Use HTTP GET method
+			// data is the response JSON string
+			String data = target.request(MediaType.APPLICATION_JSON).get(String.class);
+			
+			try {
+				// Use Jackson to read the JSON into a tree like structure
+				ObjectMapper mapper = new ObjectMapper();
+				JsonNode root = mapper.readTree(data);
+				
+				// Make sure the JSON is an object, as said in their documents
+				assert root.isObject();
+				// Read the "Meta Data" property of JSON object
+				JsonNode metadata = root.get("Meta Data");
+				assert metadata.isObject();
+				// Read "2. Symbol" property of "Meta Data" property
+				if (metadata.get("2. Symbol").isValueNode()) {
+					//System.out.println(metadata.get("2. Symbol").asText());
+					//System.out.println(metadata);
+				}
+				// Print "4. Time Zone" property of "Meta Data" property of root JSON object
+				//System.out.println(root.at("/Meta Data/4. Time Zone").asText());
+				// Read "Weekly Time Series" property of root JSON object
+				Iterator<String> dates = root.get("Time Series (Daily)").fieldNames();
+				JsonNode first=root.get("Time Series (Daily)");
+				JsonNode Second=first.get(dates.next());
+				price=Second.get("1. open").asText();
+				volume=Second.get("5. volume").asInt();
+				
+				return root;
+
+				
+				/*while(dates.hasNext()) {
+					// Read the first date's open price
+					JsonNode first=root.get("Weekly Time Series");
+					JsonNode Second=first.get(dates.next());
+					price=Second.get("1. open").asText();
+					System.out.println(Second);
+					//price = root.at("/Weekly Time Series/" + dates.next() + "/1. open");
+					System.out.println(Double.parseDouble(price));
+					// remove break if you wan't to print all the open prices.
+					break;
+				}*/
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 	
+		
+		
+	}catch(Exception e) {
+		e.printStackTrace();
+		}
+	return null;
+	}
+}
 

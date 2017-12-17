@@ -116,6 +116,20 @@ public class Watchlist {
 				
 			}
 			
+			public String viewHistory() {
+				ExternalContext externalContext = FacesContext.getCurrentInstance()
+				        .getExternalContext();
+				try {
+				externalContext.redirect(externalContext.getRequestContextPath()
+			            + "/faces/stock_history.xhtml");
+				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("symbol",this.symbol);
+				}catch(IOException e) {
+					e.printStackTrace();
+				}
+				return "true";
+				
+			}
+			
 			public String sell() {
 				ExternalContext externalContext = FacesContext.getCurrentInstance()
 				        .getExternalContext();

@@ -81,9 +81,9 @@ public class Register {
 	
 	public String registerUser() {
 		
-		boolean valid=validateUserID(this.userid);
-		
-		if(!valid)
+		boolean user=validateManagerID(this.userid);
+		boolean manager=validateUserID(this.userid);
+		if(!user && !manager)
 		{
 		Connection con = null;
 		try {
@@ -144,9 +144,9 @@ public class Register {
 	
 public String registerManager() {
 		
-		boolean valid=validateManagerID(this.userid);
-		
-		if(!valid)
+		boolean user=validateManagerID(this.userid);
+		boolean manager=validateUserID(this.userid);
+		if(!user && !manager)
 		{
 		Connection con = null;
 		try {

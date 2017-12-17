@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://xmlns.jcp.org/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
+
+	<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+		<style type="text/css">
+		    #wrapper {
+			  text-align: center;
+			}
+		</style>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width,intial-scale=1"/>
+		<meta http-equiv="X-UA-Conpatible" content="IE=edge"/>
+	<title>Stock History</title>
+</h:head>
+<h:body>
+	<c:choose>
+	<c:when test="#{sessionScope.userid == null}">
+	<h:form styleClass="form-horizontal">
+		<div class="container" style="margin-top: 10px">
+			<div class="navbar navbar-inverse">
+			<div class="navbar-brand">
+					You Are Not Logged in
+			</div>
+			<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+			<h:commandButton type="submit" value="Log In"  action="#{register.signinUser}" immediate="true" styleClass="btn btn-primary navbar-inverse">
+			</h:commandButton>
+			</div>
+			</div>
+		</div>
+	</h:form>
+	</c:when>
+	<c:otherwise>
+	<h:form styleClass="form-horizontal">
+		<div class="container" style="margin-top: 10px">
+			<div class="navbar navbar-inverse">
+				<div class="navbar-brand">
+					Stock History
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Log out" action="#{login.logout}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Update Profile" action="#{login.update_profile}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Watch-list" action="#{login.watchlist}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Managers" action="#{login.managers}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Account" action="#{login.account}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Home" action="#{login.home}" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+			</div>				
+		</div>
+		
+		<div align="center" >
+		<br/>
+		<h:outputLabel value="Stock : "></h:outputLabel>
+		<h:outputLabel value="#{stock_history.symbol}"></h:outputLabel>
+		
+		</div>
+		
+		<div align="center" >
+	    <h4><b>Stock Prices of Last 10 mins</b></h4>
+	    <table>
+    		<tr>
+    			<th style="padding:0 30px 0 30px;">Date</th>
+    			<th style="padding:0 30px 0 30px;">Open</th>
+    			<th style="padding:0 30px 0 30px;">High</th>
+    			<th style="padding:0 30px 0 30px;">Low</th>
+    			<th style="padding:0 30px 0 30px;">Close</th>
+    			<th style="padding:0 30px 0 30px;">Volume</th>
+    		</tr>
+    		<tbody>
+	    		<ui:repeat var="o" value="#{stock_history.min1List}" varStatus="status">
+	    		        <h:panelGroup>
+	    			  <tr>
+		    			<td style="padding:0 30px 0 30px;">#{o.date}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.open}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.high}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.low}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.close}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.volume}</td>
+		    		  </tr>
+	    			</h:panelGroup>
+	    		</ui:repeat>
+    		</tbody>
+	    </table>
+	    </div>
+		<br/><br/>
+		
+		<div align="center" >
+		<h4><b>Stock Prices of Last 6 hours</b></h4>
+	    <table>
+    		<tr>
+    			<th style="padding:0 30px 0 30px;">Date</th>
+    			<th style="padding:0 30px 0 30px;">Open</th>
+    			<th style="padding:0 30px 0 30px;">High</th>
+    			<th style="padding:0 30px 0 30px;">Low</th>
+    			<th style="padding:0 30px 0 30px;">Close</th>
+    			<th style="padding:0 30px 0 30px;">Volume</th>
+    		</tr>
+    		<tbody>
+	    		<ui:repeat var="o" value="#{stock_history.min60List}" varStatus="status">
+	    		        <h:panelGroup>
+	    			  <tr>
+		    			<td style="padding:0 30px 0 30px;">#{o.date}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.open}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.high}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.low}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.close}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.volume}</td>
+		    		  </tr>
+	    			</h:panelGroup>
+	    		</ui:repeat>
+    		</tbody>
+	    </table>
+	  	</div>
+		<br/><br/>
+		
+		
+		<div align="center" >
+		<h4><b>Stock Prices of Last 6 Days</b></h4>
+	    <table>
+    		<tr>
+    			<th style="padding:0 30px 0 30px;">Date</th>
+    			<th style="padding:0 30px 0 30px;">Open</th>
+    			<th style="padding:0 30px 0 30px;">High</th>
+    			<th style="padding:0 30px 0 30px;">Low</th>
+    			<th style="padding:0 30px 0 30px;">Close</th>
+    			<th style="padding:0 30px 0 30px;">Volume</th>
+    		</tr>
+    		<tbody>
+	    		<ui:repeat var="o" value="#{stock_history.daysList}" varStatus="status">
+	    		        <h:panelGroup>
+	    			  <tr>
+		    			<td style="padding:0 30px 0 30px;">#{o.date}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.open}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.high}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.low}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.close}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.volume}</td>
+		    		  </tr>
+	    			</h:panelGroup>
+	    		</ui:repeat>
+    		</tbody>
+	    </table>
+	  	</div>
+		<br/><br/>
+	    
+	    
+	    <div align="center" >
+	    <h4><b>Stock Prices of Last 6 Weeks</b></h4>
+	    <table>
+    		<tr>
+    			<th style="padding:0 30px 0 30px;">Date</th>
+    			<th style="padding:0 30px 0 30px;">Open</th>
+    			<th style="padding:0 30px 0 30px;">High</th>
+    			<th style="padding:0 30px 0 30px;">Low</th>
+    			<th style="padding:0 30px 0 30px;">Close</th>
+    			<th style="padding:0 30px 0 30px;">Volume</th>
+    		</tr>
+    		<tbody>
+	    		<ui:repeat var="o" value="#{stock_history.weekList}" varStatus="status">
+	    		        <h:panelGroup>
+	    			  <tr>
+		    			<td style="padding:0 30px 0 30px;">#{o.date}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.open}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.high}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.low}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.close}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.volume}</td>
+		    		  </tr>
+	    			</h:panelGroup>
+	    		</ui:repeat>
+    		</tbody>
+	    </table>
+	    </div>
+	    
+	    
+	</h:form>
+	</c:otherwise>
+	</c:choose>
+	
+	
+	
+</h:body>
+</html>
