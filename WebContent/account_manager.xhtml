@@ -23,8 +23,7 @@
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width,intial-scale=1"/>
 		<meta http-equiv="X-UA-Conpatible" content="IE=edge"/>
-		<title>Manager Details</title>
-
+	<title>Account</title>
 </h:head>
 <h:body>
 	<c:choose>
@@ -48,62 +47,102 @@
 		<div class="container" style="margin-top: 10px">
 			<div class="navbar navbar-inverse">
 				<div class="navbar-brand">
-					Welcome #{login.name}
+					Your Account
 				</div>
 				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
 					<h:commandButton type="submit" value="Log out" action="#{login.logout}" styleClass="btn btn-primary navbar-inverse">
 					</h:commandButton>
 				</div>
 				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
-					<h:commandButton type="submit" value="Update Profile" action="#{login.update_profile}" styleClass="btn btn-primary navbar-inverse">
+					<h:commandButton type="submit" value="Update Profile" action="#{login.update_profile_manager}" styleClass="btn btn-primary navbar-inverse">
 					</h:commandButton>
 				</div>
 				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
-					<h:commandButton type="submit" value="Watch-list" action="#{login.watchlist}" styleClass="btn btn-primary navbar-inverse">
+					<h:commandButton type="submit" value="Client-requests" action="#{login.client_request}" styleClass="btn btn-primary navbar-inverse">
 					</h:commandButton>
 				</div>
 				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
-					<h:commandButton type="submit" value="Managers" action="#{login.managers}" styleClass="btn btn-primary navbar-inverse">
+					<h:commandButton type="submit" value="Watch-list" action="#{login.watchlist_manager}" styleClass="btn btn-primary navbar-inverse">
 					</h:commandButton>
 				</div>
 				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
-					<h:commandButton type="submit" value="Account" action="#{login.account}" styleClass="btn btn-primary navbar-inverse">
+					<h:commandButton type="submit" value="Account" action="#{login.account_manager}" styleClass="btn btn-primary navbar-inverse">
 					</h:commandButton>
 				</div>
 				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
-					<h:commandButton type="submit" value="Home" action="#{login.home}" styleClass="btn btn-primary navbar-inverse">
+					<h:commandButton type="submit" value="Home" action="#{login.home_manager}" styleClass="btn btn-primary navbar-inverse">
 					</h:commandButton>
 				</div>
 			</div>				
 		</div>
-		<div align="center">
+		
+		<div align="center" >
+		<br/>
+		<h4><b><h:outputLabel value="Account Balance :"></h:outputLabel></b></h4>
+		<h:outputLabel value="#{account_manager.balance}"></h:outputLabel>
+		
+		</div>
+		
+		<br/><br/>
+		
+
+		<div align="center" >
+		<h4><b>Client Details</b></h4>
 		<table>
     		<tr>
-    			<th style="padding:0 30px 0 30px;">Manager ID</th>
-    			<th style="padding:0 30px 0 30px;">Manager Name</th>
+    			<th style="padding:0 30px 0 30px;">ClientId</th>
+    			<th style="padding:0 30px 0 30px;">Name</th>
     			<th style="padding:0 30px 0 30px;">Email</th>
-    			<th style="padding:0 30px 0 30px;">Commissions</th>
     		</tr>
     		<tbody>
-	    		<ui:repeat var="o" value="#{manager_details.managerList}" varStatus="status">
+	    		<ui:repeat var="o" value="#{account_manager.clientList}" varStatus="status">
 	    		        <h:panelGroup>
 	    			  <tr>
-		    			<td style="padding:0 30px 0 30px;">#{o.managerid}</td>
+						<tr>
+		    			<td style="padding:0 30px 0 30px;">#{o.userid}</td>
 		    			<td style="padding:0 30px 0 30px;">#{o.name}</td>
 		    			<td style="padding:0 30px 0 30px;">#{o.email}</td>
-		    			<td style="padding:0 30px 0 30px;">#{o.commission}</td>
-		    			<td>
-		    			<h:commandButton  type="submit" value="Select" action="#{o.select}" styleClass="btn btn-primary navbar-inverse">
-		    				
-		    			</h:commandButton>
-		    			
-		    			</td>
+		    		  	</tr>
 		    		  </tr>
 	    			</h:panelGroup>
 	    		</ui:repeat>
     		</tbody>
-    	</table>
-    	</div>>
+	    </table>
+	    </div>>
+	    
+	    <br/>
+	    <br/>
+	    
+	    
+	    <div align="center" >
+	    <h4><b>Account History</b></h4>
+	    <table>
+    		<tr>
+    			<th style="padding:0 30px 0 30px;">Client</th>
+    			<th style="padding:0 30px 0 30px;">Symbol</th>
+    			<th style="padding:0 30px 0 30px;">Price</th>
+    			<th style="padding:0 30px 0 30px;">Count</th>
+    			<th style="padding:0 30px 0 30px;">Cost</th>
+    			<th style="padding:0 30px 0 30px;">Commission</th>
+    			<th style="padding:0 30px 0 30px;">Buy/Sell</th>
+    		</tr>
+    		<tbody>
+	    		<ui:repeat var="o" value="#{account_manager.transactionList}" varStatus="status">
+	    		        <h:panelGroup>
+	    			  <tr>
+	    			  	<td style="padding:0 30px 0 30px;">#{o.client}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.symbol}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.price}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.count}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.cost}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.commission}</td>
+		    			<td style="padding:0 30px 0 30px;">#{o.buy_or_sell}</td>
+		    		  </tr>
+	    			</h:panelGroup>
+	    		</ui:repeat>
+    		</tbody>
+	    </table>
+	    </div>
 	</h:form>
 	</c:otherwise>
 	</c:choose>

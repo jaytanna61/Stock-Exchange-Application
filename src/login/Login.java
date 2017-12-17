@@ -315,7 +315,7 @@ public class Login {
 		        .getExternalContext();
 		try {
 		externalContext.redirect(externalContext.getRequestContextPath()
-	            + "/faces/account.xhtml");
+	            + "/faces/account_manager.xhtml");
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
