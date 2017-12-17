@@ -202,6 +202,30 @@ public class Login {
 		return "true";
 	}
 	
+	public String update_profile() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+		        .getExternalContext();
+		try {
+		externalContext.redirect(externalContext.getRequestContextPath()
+	            + "/faces/update_profile.xhtml");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return "true";
+	}
+	
+	public String update_profile_manager() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+		        .getExternalContext();
+		try {
+		externalContext.redirect(externalContext.getRequestContextPath()
+	            + "/faces/update_profile_manager.xhtml");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return "true";
+	}
+	
 	public String watchlist() {
 		ExternalContext externalContext = FacesContext.getCurrentInstance()
 		        .getExternalContext();
