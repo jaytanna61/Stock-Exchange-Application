@@ -2,10 +2,12 @@ package login;
 
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 
 @ManagedBean(name="buystock")
 @ApplicationScoped
@@ -59,10 +61,23 @@ public class BuyStock {
 		if(cost <= balance)
 		{
 			dao.buyStocks(userid,null,null,getSymbol(),getNumberOfStocks(),getPrice(),cost);
+			FacesContext.getCurrentInstance().addMessage(
+					"buy_stock_form:count",
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Purchase done",
+							"Purchase done"));
+			Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+			flash.setKeepMessages(true);
 		}
 		else
 		{
-			
+			FacesContext.getCurrentInstance().addMessage(
+					"buy_stock_form:count",
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"U do not have enough funds",
+							"U do not have enough funds"));
+			Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+			flash.setKeepMessages(true);
 		}
 		
 		return null;
@@ -84,10 +99,23 @@ public class BuyStock {
 		if(managerid != null && cost <= balance)
 		{
 			dao.buyStockRequest(userid,managerid,getSymbol(),getNumberOfStocks());
+			FacesContext.getCurrentInstance().addMessage(
+					"buy_stock_form:count",
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Request sent",
+							"Request sent"));
+			Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+			flash.setKeepMessages(true);
 		}
 		else
 		{
-			System.out.println("IN");
+			FacesContext.getCurrentInstance().addMessage(
+					"buy_stock_form:count",
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"U do not have enough funds",
+							"U do not have enough funds"));
+			Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+			flash.setKeepMessages(true);
 		}
 		
 		return null;

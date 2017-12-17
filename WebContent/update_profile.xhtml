@@ -45,8 +45,29 @@
 							Update Profile
 						</div>
 						<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
-						<h:commandButton value="Logout" action="#{login.logout}" immediate="true" class="btn btn-primary navbar-inverse"> </h:commandButton>
-						</div>	
+					<h:commandButton type="submit" value="Log out" action="#{login.logout}" immediate="true" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Update Profile" action="#{login.update_profile}" immediate="true" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Watch-list" action="#{login.watchlist}" immediate="true" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Managers" action="#{login.managers}" immediate="true" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Account" action="#{login.account}" immediate="true" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
+				<div class="pull-right" style="margin-top: 10px; margin-right: 10px">
+					<h:commandButton type="submit" value="Home" action="#{login.home}" immediate="true" styleClass="btn btn-primary navbar-inverse">
+					</h:commandButton>
+				</div>
 					</div>		
 			</div>
 			

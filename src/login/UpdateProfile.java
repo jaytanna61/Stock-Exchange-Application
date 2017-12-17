@@ -26,9 +26,8 @@ public class UpdateProfile {
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		Map<String, Object> sessionMap = externalContext.getSessionMap();
 		String userid=sessionMap.get("userid").toString();
-		
 		con=DatabaseConnection.getConnection();
-		String sql = "SELECT * FROM manager WHERE userid = ?";
+		String sql = "SELECT * FROM user_table WHERE userid = ?";
 		ResultSet rs = null;
 		
 		try {

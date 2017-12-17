@@ -2,10 +2,12 @@ package login;
 
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 
 @ManagedBean(name="sellstock")
 @ApplicationScoped
@@ -68,10 +70,23 @@ public class SellStock {
 		{
 			Double cost=Integer.parseInt(requestedCount) * Double.parseDouble(getPrice());
 			dao.sellStocks(userid,null,null,getSymbol(),requestedCount,getPrice(),cost);
+			FacesContext.getCurrentInstance().addMessage(
+					"sell_stock_form:count",
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Sell done",
+							"Sell done"));
+			Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+			flash.setKeepMessages(true);
 		}
 		else
 		{
-			
+			FacesContext.getCurrentInstance().addMessage(
+					"sell_stock_form:count",
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"U do not have enough number of stocks to sell",
+							"U do not have enough number of stocks to sell"));
+			Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+			flash.setKeepMessages(true);
 		}
 		
 		return null;
@@ -89,10 +104,23 @@ public class SellStock {
 		if(managerid != null && Integer.parseInt(requestedCount) <= Integer.parseInt(getCount()))
 		{
 			dao.sellStockRequest(userid,managerid,getSymbol(),getCount());
+			FacesContext.getCurrentInstance().addMessage(
+					"sell_stock_form:count",
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Request sent",
+							"Request sent"));
+			Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+			flash.setKeepMessages(true);
 		}
 		else
 		{
-			System.out.println("IN");
+			FacesContext.getCurrentInstance().addMessage(
+					"sell_stock_form:count",
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"U do not have enough number of stocks to sell",
+							"U do not have enough number of stocks to sell"));
+			Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+			flash.setKeepMessages(true);
 		}
 		
 		return null;
