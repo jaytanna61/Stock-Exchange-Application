@@ -98,6 +98,72 @@ public class AlphaVantage {
 			}
 }
 	
+	public static String getPrice(String Symbol)
+	{
+		String price=null;
+		int volume=0;
+		
+		try {
+			
+			
+				
+				Client client= ClientBuilder.newClient();
+
+				// Core settings are here, put what ever API parameter you want to use
+				WebTarget target= client.target("https://www.alphavantage.co/query")
+				   .queryParam("function", "TIME_SERIES_INTRADAY")
+				   .queryParam("symbol", Symbol )
+				   .queryParam("interval","1min")
+				   .queryParam("apikey", Key);
+				// Actually calling API here, Use HTTP GET method
+				// data is the response JSON string
+				String data = target.request(MediaType.APPLICATION_JSON).get(String.class);
+				
+				try {
+					// Use Jackson to read the JSON into a tree like structure
+					ObjectMapper mapper = new ObjectMapper();
+					JsonNode root = mapper.readTree(data);
+					
+					// Make sure the JSON is an object, as said in their documents
+					assert root.isObject();
+					// Read the "Meta Data" property of JSON object
+					JsonNode metadata = root.get("Meta Data");
+					assert metadata.isObject();
+					// Read "2. Symbol" property of "Meta Data" property
+					if (metadata.get("2. Symbol").isValueNode()) {
+						//System.out.println(metadata.get("2. Symbol").asText());
+						//System.out.println(metadata);
+					}
+					// Print "4. Time Zone" property of "Meta Data" property of root JSON object
+					//System.out.println(root.at("/Meta Data/4. Time Zone").asText());
+					// Read "Weekly Time Series" property of root JSON object
+					Iterator<String> dates = root.get("Time Series (1min)").fieldNames();
+					JsonNode first=root.get("Time Series (1min)");
+					JsonNode Second=first.get(dates.next());
+					price=Second.get("4. close").asText();
+					volume=Second.get("5. volume").asInt();
+					//System.out.println(price+":"+volume);
+					Connection con=DatabaseConnection.getConnection();
+					String inner_sql = "UPDATE SYMBOLS SET PRICE = ? , VOLUME = ? WHERE SYMBOL = ?";;
+					PreparedStatement inner_st = con.prepareStatement(inner_sql);
+					inner_st.setString(1,price);
+					inner_st.setString(2,volume+"");
+					inner_st.setString(3,Symbol);
+					// Execute the statement
+					inner_st.executeUpdate();
+					return price;
+					
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 	
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			}
+		return price;
+	}
 	
 	public static JsonNode getWeekData(String Symbol) {
 		String price=null;

@@ -155,8 +155,14 @@ public class Account {
 				
 			Connection con=DatabaseConnection.getConnection();
 			// Get a prepared SQL statement
-			String sql = "SELECT * from account_history";
+			String sql = "SELECT * from account_history where userid = ?";
+			
+			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+			Map<String, Object> sessionMap = externalContext.getSessionMap();
+			String userid=sessionMap.get("userid").toString();
+			
 			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1,userid);
 			// Execute the statement
 			ResultSet rs = st.executeQuery();
 			rs.beforeFirst();
