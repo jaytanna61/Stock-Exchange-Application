@@ -63,7 +63,7 @@ public class Login {
 			// Iterate through results
 			if (rs.next()) {
 				
-				//AlphaVantage.getData();
+				AlphaVantage.getData();
 				
 				ExternalContext externalContext = FacesContext.getCurrentInstance()
 				        .getExternalContext();
@@ -102,7 +102,7 @@ public class Login {
 					
 					if(rs.getString("activated").equals("true"))
 					{
-					//AlphaVantage.getData();
+					AlphaVantage.getData();
 					
 					ExternalContext externalContext = FacesContext.getCurrentInstance()
 					        .getExternalContext();

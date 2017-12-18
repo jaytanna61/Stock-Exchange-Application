@@ -144,6 +144,7 @@ public class Register {
 	
 public String registerManager() {
 		
+	
 		boolean user=validateManagerID(this.userid);
 		boolean manager=validateUserID(this.userid);
 		if(!user && !manager)
@@ -154,7 +155,7 @@ public String registerManager() {
 			con=DatabaseConnection.getConnection();
 
 			// Get a prepared SQL statement
-			String sql = "INSERT into manager (name,email,managerid,password,commission,licence,activated) VALUES (?,?,?,?,?,?,?)";
+			String sql = "INSERT into manager (name,email,managerid,password,commission,license,activated) VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement st = con.prepareStatement(sql);
 			//st.setInt(1, 1);
 			st.setString(1,this.name);
