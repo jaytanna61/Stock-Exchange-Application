@@ -101,8 +101,10 @@ public class SellStock {
 		DAO dao=DAO.getInstance();
 		String managerid=dao.getManager(userid);
 		
-		if(managerid != null && Integer.parseInt(requestedCount) <= Integer.parseInt(getCount()))
+		if(Integer.parseInt(requestedCount) <= Integer.parseInt(getCount()))
 		{
+			if(!managerid.equals("not_set"))
+			{
 			dao.sellStockRequest(userid,managerid,getSymbol(),getCount());
 			FacesContext.getCurrentInstance().addMessage(
 					"sell_stock_form:count",
@@ -111,6 +113,16 @@ public class SellStock {
 							"Request sent"));
 			Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
 			flash.setKeepMessages(true);
+			}
+			else {
+				FacesContext.getCurrentInstance().addMessage(
+						"sell_stock_form:count",
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"You have not selecetd any manager yet",
+								"You have not selected any manager yet"));
+				Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+				flash.setKeepMessages(true);
+			}
 		}
 		else
 		{

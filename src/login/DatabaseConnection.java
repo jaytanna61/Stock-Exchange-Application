@@ -11,13 +11,20 @@ public class DatabaseConnection {
 		if(ds==null)
 		{
 		try {
-		ds = new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
+			
+		/*ds = new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
 		ds.setServerName("localhost");
 		ds.setPortNumber(3306);
 		ds.setDatabaseName("user");
 		ds.setUser("root");
-		ds.setPassword("admin");
+		ds.setPassword("admin");*/
 		
+		ds = new com.mysql.jdbc.jdbc2.optional.MysqlDataSource();
+		ds.setServerName(System.getenv("ICSI518_SERVER"));
+		ds.setPortNumber(Integer.valueOf(System.getenv("ICSI518_PORT")));
+		ds.setDatabaseName(System.getenv("ICSI518_DB"));
+		ds.setUser(System.getenv("ICSI518_USER"));
+		ds.setPassword(System.getenv("ICSI518_PASSWORD"));
 		return ds.getConnection();
 		}
 		catch(Exception e)

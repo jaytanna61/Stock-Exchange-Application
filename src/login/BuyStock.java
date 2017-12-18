@@ -96,8 +96,11 @@ public class BuyStock {
 		
 		String managerid=dao.getManager(userid);
 		
-		if(managerid != null && cost <= balance)
+		if(cost <= balance)
 		{
+			if(!managerid.equals("not_set"))
+			{
+			System.out.println(""+managerid);
 			dao.buyStockRequest(userid,managerid,getSymbol(),getNumberOfStocks());
 			FacesContext.getCurrentInstance().addMessage(
 					"buy_stock_form:count",
@@ -106,6 +109,16 @@ public class BuyStock {
 							"Request sent"));
 			Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
 			flash.setKeepMessages(true);
+			}
+			else {
+				FacesContext.getCurrentInstance().addMessage(
+						"buy_stock_form:count",
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"You have not selecetd any manager yet",
+								"You have not selected any manager yet"));
+				Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+				flash.setKeepMessages(true);
+			}
 		}
 		else
 		{
