@@ -68,8 +68,6 @@ public class AccountManager {
 			}
 			
 			
-			
-			
 			}catch(Exception e)
 			{
 				e.printStackTrace();

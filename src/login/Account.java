@@ -28,6 +28,8 @@ public class Account {
 		
 		DAO dao=DAO.getInstance();
 		manager_id=dao.getManager(userid);
+		if( manager_id.equals("not_set"))
+			return null;
 		return manager_id;
 	}
 
@@ -79,7 +81,8 @@ public class Account {
 		DAO dao=DAO.getInstance();
 		String managerid=dao.getManager(userid);
 		manager_commission=dao.getManagerCommission(managerid);
-		
+		if(manager_commission == null)
+			return null;
 		return manager_commission + "%";
 	}
 
