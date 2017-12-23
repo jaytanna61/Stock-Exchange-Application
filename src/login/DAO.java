@@ -61,8 +61,26 @@ public class DAO {
 	
 	public String getPrice(String Symbol) {
 		
-		String price =AlphaVantage.getPrice(Symbol); 
-		return price;
+		con=DatabaseConnection.getConnection();
+		
+		//String price =AlphaVantage.getPrice(Symbol);
+		String sql = "SELECT price FROM symbols WHERE symbol = ?";
+		ResultSet rs = null;
+		
+		try {
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1, Symbol);
+			rs = st.executeQuery();
+			if(rs.next())
+			{
+				String price= rs.getString("price");
+				return price;
+			}
+		}catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		return null;
 		
 	}
 	

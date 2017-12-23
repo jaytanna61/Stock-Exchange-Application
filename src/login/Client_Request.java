@@ -115,7 +115,7 @@ public class Client_Request {
 
 			public String done() {
 				//String bid=event.getComponent().getId();
-				System.out.println(reqid);
+				//System.out.println(reqid);
 				
 				ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 				Map<String, Object> sessionMap = externalContext.getSessionMap();
